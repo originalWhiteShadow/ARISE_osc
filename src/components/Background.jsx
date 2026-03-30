@@ -72,6 +72,8 @@ export default function Background() {
   return (
     <div className="particles-wrap" aria-hidden>
       <ParticlesComp id="tsparticles" init={particlesInit} options={options} />
+      {/* enforce pointer-events:none in case built CSS or remote deploy sets it differently */}
+      <script dangerouslySetInnerHTML={{ __html: "(function(){try{const p=document.getElementById('tsparticles');if(p){p.style.pointerEvents='none';const c=p.querySelector('canvas');if(c) c.style.pointerEvents='none';}}catch(e){}})();" }} />
     </div>
   )
 }
