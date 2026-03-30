@@ -1,6 +1,5 @@
 import React from 'react'
 import Navbar from './components/Navbar'
-import Profile from './components/Profile'
 
 export default function App() {
   return (
@@ -8,7 +7,6 @@ export default function App() {
       <header>
         <Navbar />
       </header>
-      <Profile />
       <main>
         <section className="hero center-hero">
           <h1 className="main-title">

@@ -8,10 +8,6 @@ export default function Navbar() {
   return (
     <aside className="sidebar" aria-label="Main navigation">
       <div className="sidebar-inner">
-        <div className="sidebar-top">
-          <div className="sidebar-brand">ARISE_osc</div>
-        </div>
-
         <nav className="sidebar-nav">
           <ul>
             {NAV_ITEMS.map(item => (
@@ -26,8 +22,14 @@ export default function Navbar() {
             ))}
           </ul>
         </nav>
-
-        <div className="sidebar-bottom" />
+        <div className="sidebar-bottom">
+          <button className="profile" aria-label="Profile">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+              <path d="M12 12c2.761 0 5-2.239 5-5s-2.239-5-5-5-5 2.239-5 5 2.239 5 5 5z" fill="currentColor" opacity="0.95"/>
+              <path d="M2 22c0-3.866 3.582-7 10-7s10 3.134 10 7v1H2v-1z" fill="currentColor" opacity="0.9"/>
+            </svg>
+          </button>
+        </div>
       </div>
     </aside>
   )
