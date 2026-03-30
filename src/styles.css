@@ -30,8 +30,8 @@ body{
 .profile{position:fixed;right:20px;top:14px;width:44px;height:44px;border-radius:50%;background:linear-gradient(180deg,var(--accent),var(--accent-2));border:1px solid rgba(0,0,0,0.12);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#0b0b0b;box-shadow:0 8px 22px rgba(0,0,0,0.14);z-index:60}
 .profile svg{color:#0b0b0b}
 
-/* Particles overlay: full viewport, blend over everything, non-interactive */
-#tsparticles{position:fixed !important;inset:0 !important;pointer-events:none !important;mix-blend-mode:screen !important;opacity:0.95 !important;z-index:35 !important}
+#/* Particles overlay: full viewport, blend over everything, interactive */
+#tsparticles{position:fixed !important;inset:0 !important;pointer-events:auto !important;mix-blend-mode:screen !important;opacity:0.95 !important;z-index:35 !important}
 #tsparticles canvas{width:100% !important;height:100% !important}
 
 /* Main content spacing so content sits below top nav */
@@ -63,6 +63,12 @@ body{
   --muted: #BDBCB8; /* neutral muted */
   --panel: rgba(255,255,255,0.04);
 }
+
+/*
+  Stylesheet for ARISE_osc UI
+  - Consolidated and kept lightweight to reduce overrides
+  - If you want further refactors, consider splitting into component-specific CSS files
+*/
 
 *{box-sizing:border-box}
 html,body,#root{height:100%}
@@ -102,8 +108,8 @@ body{
 /* Particles container sits behind content */
 
 
-/* tsparticles canvas: overlay the full viewport and blend with content */
-#tsparticles{position:fixed !important;inset:0 !important;pointer-events:none !important;mix-blend-mode:screen !important;opacity:0.9 !important;z-index:35 !important}
+#/* tsparticles canvas: overlay the full viewport and blend with content (interactive) */
+#tsparticles{position:fixed !important;inset:0 !important;pointer-events:auto !important;mix-blend-mode:screen !important;opacity:0.9 !important;z-index:35 !important}
 #tsparticles canvas{width:100% !important;height:100% !important}
 
 /* Main content spacing to account for top nav */
@@ -328,6 +334,62 @@ body{
 
 .site-footer{text-align:center;padding:3rem 1rem;color:var(--muted)}
 
+/* News highlights section */
+.news-section{padding:3.5rem 1rem 6rem;margin-top:2.5rem;background:transparent}
+.news-inner{max-width:1100px;margin:0 auto;text-align:left}
+.news-title{color:var(--accent);font-weight:800;margin:0 0 1rem;font-size:1.25rem}
+.news-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.news-card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:1.25rem;border-radius:12px;border:1px solid rgba(255,255,255,0.03);box-shadow:0 8px 24px rgba(0,0,0,0.25);display:flex;flex-direction:column;justify-content:space-between;min-height:140px}
+.news-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.6rem}
+.news-card-title{color:var(--muted);font-weight:800}
+.news-date{color:rgba(255,255,255,0.45);font-size:0.85rem}
+.news-summary{color:var(--muted);margin:0 0 1rem;flex:1}
+.news-cta{align-self:flex-end;background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--accent);padding:6px 10px;border-radius:8px;cursor:pointer}
+
+@media (max-width:900px){
+  .news-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:640px){
+  .news-grid{grid-template-columns:1fr}
+  .news-inner{text-align:center}
+  .news-card{min-height:120px}
+}
+
+/* Tab content placeholders */
+.tab-content{max-width:1100px;margin:2rem auto;padding:2rem 1rem;text-align:center}
+.tab-placeholder{background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));padding:2rem;border-radius:12px;border:1px solid rgba(255,255,255,0.03);text-align:left}
+.tab-placeholder h2{color:var(--accent);margin:0 0 0.75rem}
+.tab-placeholder p{color:var(--muted);margin:0}
+
+/* Projects list */
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(40px,1fr));gap:0.35rem;margin-top:0.5rem}
+.project-card{display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;padding:0.25rem;border-radius:6px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.03);box-shadow:0 3px 8px rgba(0,0,0,0.08);aspect-ratio:1/1;overflow:visible}
+.project-info{width:100%}
+.project-title{font-weight:800;color:#ffffff;display:block;font-size:clamp(1rem,1.2vw,1.25rem);line-height:1.15}
+.project-desc{color:#f7f3ea;margin:0.25rem 0 0;font-size:clamp(0.9rem,1vw,1rem);line-height:1.25;flex:0 1 auto;opacity:0.98;max-height:3.6rem;overflow:hidden}
+.project-actions{display:flex;align-items:center;gap:8px;width:100%;justify-content:flex-end}
+.project-cta{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--accent);padding:6px 10px;border-radius:8px;text-decoration:none;font-size:0.9rem}
+
+@media (max-width:1200px){
+  .projects-grid{grid-template-columns:repeat(4,1fr)}
+}
+@media (max-width:900px){
+  .projects-grid{grid-template-columns:repeat(3,1fr)}
+}
+@media (max-width:640px){
+  .projects-grid{grid-template-columns:1fr}
+  .project-card{aspect-ratio:auto;padding:1rem}
+  .project-actions{justify-content:flex-start}
+}
+
+/* Make the first project tile visually smaller (scaled down) without collapsing the grid */
+.projects-grid .project-card:first-child{
+  transform: none;
+}
+
+/* ensure project cards render above particle canvas */
+.project-card{position:relative;z-index:40}
+
 /* Responsive */
 @media (max-width:900px){
   .cards{grid-template-columns:repeat(2,1fr)}
@@ -348,3 +410,9 @@ body{
 .center-hero{display:flex;align-items:center;justify-content:center;min-height:120vh !important}
 .cards{margin-left:0 !important}
 .sidebar-inner{margin-left:0 !important}
+
+/* Hero stacking and reveal polishing */
+.hero.center-hero{position:relative;overflow:visible}
+.main-title{position:relative;z-index:45;will-change:transform,opacity,filter}
+.description{position:relative;z-index:40;margin-top:-8px;will-change:transform,opacity}
+.main-title .big,.main-title .small{display:block}

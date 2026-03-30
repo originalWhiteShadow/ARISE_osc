@@ -1,19 +1,32 @@
 import React, { useState } from 'react'
+import '../styles/navbar.css'
 
-const NAV_ITEMS = ['Home', 'Projects', 'Startups', 'Sponsor']
+/**
+ * Navbar component — renders the top navigation and profile button.
+ * Accepts optional `active` and `onChange` props so parent can control
+ * the active tab (controlled vs uncontrolled usage).
+ */
+const NAV_ITEMS = ['Home', 'Projects', 'Startups', 'Sponsor', 'Learn', 'News']
 
-export default function Navbar() {
-  const [active, setActive] = useState('Home')
+export default function Navbar({ active: activeProp, onChange }) {
+  const [internalActive, setInternalActive] = useState(activeProp || 'Home')
+  const active = activeProp ?? internalActive
+
+  function handleClick(item) {
+    if (onChange) onChange(item)
+    else setInternalActive(item)
+  }
 
   return (
     <header className="nav" role="banner">
       <div className="nav-inner">
         <ul className="nav-list">
-          {NAV_ITEMS.map(item => (
+          {NAV_ITEMS.map((item) => (
             <li key={item}>
               <button
                 className={`nav-link ${active === item ? 'active' : ''}`}
-                onClick={() => setActive(item)}
+                onClick={() => handleClick(item)}
+                aria-pressed={active === item}
               >
                 {item}
               </button>

@@ -1,0 +1,2 @@
+#tsparticles{position:fixed !important;inset:0 !important;pointer-events:auto !important;mix-blend-mode:screen !important;opacity:0.95 !important;z-index:35 !important}
+#tsparticles canvas{width:100% !important;height:100% !important}

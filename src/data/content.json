@@ -1,0 +1,36 @@
+{
+  "projects": [
+    {
+      "title": "ARISE_osc",
+      "summary": "The ARISE open-source community website — project scaffold, UI and community tooling.",
+      "link": "https://github.com/originalWhiteShadow/ARISE_osc"
+    },
+    {
+      "title": "Demo Project A",
+      "summary": "A sample demo showcasing component patterns and starter templates.",
+      "link": "#"
+    },
+    {
+      "title": "Demo Project B",
+      "summary": "Experimental UI kit and utility scripts for quick prototyping.",
+      "link": "#"
+    }
+  ],
+  "news": [
+    {
+      "title": "Launch: Project Atlas",
+      "date": "Mar 25, 2026",
+      "summary": "First community-built prototype released — check out the repo and demo."
+    },
+    {
+      "title": "Call for Contributors",
+      "date": "Mar 18, 2026",
+      "summary": "We are looking for designers and frontend devs to join the UI squad."
+    },
+    {
+      "title": "Sprint Results",
+      "date": "Mar 10, 2026",
+      "summary": "This sprint we shipped three starter templates and improved onboarding."
+    }
+  ]
+}

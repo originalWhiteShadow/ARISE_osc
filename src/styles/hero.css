@@ -1,0 +1,5 @@
+.hero{max-width:900px;margin:2rem auto 1.5rem}
+.center-hero{display:flex;align-items:center;justify-content:center;min-height:56vh}
+.main-title{display:flex;flex-direction:column;align-items:center;gap:0.25rem;text-align:center}
+.main-title .big{font-size:clamp(2.5rem,7vw,6rem);font-weight:900;letter-spacing:1px;color:var(--accent);text-shadow:0 8px 30px rgba(236,194,50,0.06)}
+.main-title .small{font-size:clamp(0.9rem,1.8vw,1.2rem);color:var(--muted);margin-top:-6px}
