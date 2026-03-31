@@ -10,17 +10,30 @@ const NAV_ITEMS = ['Home', 'Projects', 'Startups', 'Sponsor', 'Learn', 'News']
 
 export default function Navbar({ active: activeProp, onChange }) {
   const [internalActive, setInternalActive] = useState(activeProp || 'Home')
+  const [menuOpen, setMenuOpen] = useState(false)
   const active = activeProp ?? internalActive
 
   function handleClick(item) {
     if (onChange) onChange(item)
     else setInternalActive(item)
+    setMenuOpen(false)
   }
 
   return (
     <header className="nav" role="banner">
       <div className="nav-inner">
-        <ul className="nav-list">
+        <button
+          className="hamburger"
+          aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+          aria-expanded={menuOpen}
+          onClick={() => setMenuOpen((prev) => !prev)}
+        >
+          <span className="hamburger-line" />
+          <span className="hamburger-line" />
+          <span className="hamburger-line" />
+        </button>
+
+        <ul className={`nav-list${menuOpen ? ' open' : ''}`}>
           {NAV_ITEMS.map((item) => (
             <li key={item}>
               <button
