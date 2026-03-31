@@ -51,7 +51,7 @@ body{
 @media (max-width:640px){
   .nav-inner{padding:0 12px}
   .profile{right:12px;top:10px;width:40px;height:40px}
-  .app-root main{margin-top:84px}
+  .app-root main{margin-top:84px;margin-left:0;padding-top:2rem}
 }
 
 /* End of stylesheet */

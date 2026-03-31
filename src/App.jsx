@@ -12,6 +12,7 @@ import NewsHighlights from './components/NewsHighlights'
 export default function App() {
   const [active, setActive] = useState('Home')
   const [showBackground, setShowBackground] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
 
   // Lazy-load the Background component after initial paint to reduce bundle impact
   const Background = lazy(() => import('./components/Background'))
@@ -28,8 +29,8 @@ export default function App() {
           <Background />
         </Suspense>
       )}
-      <Navbar active={active} onChange={setActive} />
-      <main>
+      <Navbar active={active} onChange={setActive} menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+      <main className={menuOpen ? 'menu-open' : ''}>
         {active === 'Home' ? (
           <>
             <Hero />
