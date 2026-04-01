@@ -1,0 +1,50 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-brand-purple: var(--brand-purple);
+  --color-brand-midnight: var(--brand-midnight);
+  --color-brand-cyan: var(--brand-cyan);
+  --color-brand-pink: var(--brand-pink);
+  --color-brand-gold: var(--brand-gold);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+:root {
+  --background: #060512;
+  --foreground: #ededed;
+  
+  /* Theme Colors from Master Spec */
+  --brand-purple: #3b1d68;
+  --brand-midnight: #0a081a;
+  --brand-cyan: #1ae5e5;
+  --brand-pink: #d94fd6;
+  --brand-gold: #ebb134;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  overflow-x: hidden;
+  /* Ensure the background stays visually consistent */
+  background: radial-gradient(circle at center, var(--brand-purple) 0%, var(--brand-midnight) 100%);
+  min-height: 100vh;
+}
+
+/* Base Utility for UI layers */
+.ui-layer {
+  position: relative;
+  z-index: 10;
+}
+
+.world-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none; /* Let clicks pass through if empty, or handle carefully in canvas */
+}
