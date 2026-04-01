@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { IoMenu, IoCloseOutline } from "react-icons/io5";
+import { IoMenu, IoCloseOutline, IoPersonOutline } from "react-icons/io5";
 
 export function HomeNavbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -12,6 +12,7 @@ export function HomeNavbar() {
     { label: "Ecosystem", href: "/ecosystem" },
     { label: "Projects", href: "/projects" },
     { label: "Community", href: "/community" },
+    { label: "Blog", href: "/blog" },
   ];
 
   return (
@@ -33,14 +34,45 @@ export function HomeNavbar() {
             ))}
           </nav>
 
-          {/* Mobile Menu Toggle - Anchored to Right */}
-          <button 
-            className="md:hidden absolute right-4 sm:right-6 p-2 text-white/80 hover:text-white transition-colors"
-            onClick={() => setIsMobileMenuOpen(true)}
-            aria-label="Open menu"
-          >
-            <IoMenu size={28} />
-          </button>
+          {/* Right Action Icons */}
+          <div className="absolute right-4 sm:right-6 flex items-center gap-2 sm:gap-4">
+            {/* Account Profile Icon with Hover Dropdown */}
+            <div className="relative group">
+              <Link 
+                href="/profile" 
+                className="p-2 text-white/70 hover:text-white hover:scale-110 transition-all rounded-full glass border border-white/10 flex items-center justify-center cursor-pointer"
+                aria-label="Account"
+              >
+                <IoPersonOutline size={20} />
+              </Link>
+              
+              {/* Dropdown Popup */}
+              <div className="absolute right-0 top-full mt-3 w-64 rounded-2xl glass border border-white/10 shadow-[0_15px_40px_rgba(0,0,0,0.6)] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 p-5 backdrop-blur-[24px]">
+                 <div className="flex items-center gap-4 mb-4">
+                     <div className="w-12 h-12 rounded-full bg-linear-to-br from-[--color-brand-cyan] to-[--color-brand-pink] shrink-0 border-2 border-white/20 shadow-inner flex items-center justify-center text-white font-bold opacity-90">
+                       GN
+                     </div>
+                     <div>
+                        <p className="text-sm font-bold text-white tracking-wide">Guest Node</p>
+                        <p className="text-xs text-[--color-brand-cyan] mt-0.5 font-medium tracking-wider">TIER: OBSERVER</p>
+                     </div>
+                 </div>
+                 <hr className="border-white/10 mb-5" />
+                 <Link href="/profile" className="flex items-center justify-center w-full text-sm font-bold text-black bg-white rounded-xl py-2.5 hover:bg-gray-200 transition-colors shadow-md">
+                    View Full Profile
+                 </Link>
+              </div>
+            </div>
+
+            {/* Mobile Menu Toggle */}
+            <button 
+              className="md:hidden p-2 text-white/80 hover:text-white transition-colors"
+              onClick={() => setIsMobileMenuOpen(true)}
+              aria-label="Open menu"
+            >
+              <IoMenu size={28} />
+            </button>
+          </div>
         </div>
       </header>
 

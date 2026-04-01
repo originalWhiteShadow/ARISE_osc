@@ -10,7 +10,7 @@ export default function EcosystemPage() {
         <div className="mx-auto w-full max-w-6xl">
           {/* Header Card */}
           <div className="glass border border-white/10 p-8 rounded-2xl shadow-2xl mb-12 max-w-3xl mx-auto text-center backdrop-blur-xl">
-            <h1 className="text-5xl md:text-6xl font-black text-white drop-shadow-[0_0_20px_rgba(255,255,255,0.6)] mb-4 tracking-tight">
+            <h1 className="text-5xl md:text-6xl font-black text-white mb-4 tracking-tight">
               The Universe
             </h1>
             <p className="text-lg md:text-xl text-white/90 font-medium max-w-2xl mx-auto">
