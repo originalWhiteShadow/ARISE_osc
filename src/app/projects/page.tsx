@@ -82,7 +82,7 @@ export default function ProjectsPage() {
       <div className="relative z-10 min-h-screen w-full overflow-x-hidden px-4 pt-28 pb-10 md:px-8 md:pt-32 md:pb-12">
         <div className="mx-auto w-full max-w-6xl space-y-12">
           {/* Header */}
-          <div className="space-y-4 text-center">
+          <div className="glass p-8 md:p-12 rounded-3xl border border-white/10 shadow-[0_15px_40px_rgba(0,0,0,0.6)] backdrop-blur-md space-y-4 text-center">
             <div className="inline-flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-[--color-brand-pink] animate-pulse-subtle" />
               <span className="caption text-[--color-brand-pink]">COLLABORATIVE VENTURES</span>

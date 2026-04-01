@@ -35,8 +35,8 @@ export default function ProfilePage() {
                   >
                     
                     {/* Front: Cosmic Avatar */}
-                    <div className="absolute inset-0 w-full h-full flex items-center justify-center rounded-full bg-linear-to-br from-[--color-brand-cyan] to-[--color-brand-pink] border-4 border-white/20 shadow-[0_0_30px_rgba(26,229,229,0.3)]" style={{ backfaceVisibility: 'hidden' }}>
-                      <span className="text-4xl font-black text-white drop-shadow-md">GN</span>
+                    <div className="absolute inset-0 w-full h-full flex items-center justify-center rounded-full bg-linear-to-br from-[--color-brand-cyan] to-[--color-brand-pink] border-4 border-white/20 shadow-[0_0_30px_rgba(26,229,229,0.3)] overflow-hidden" style={{ backfaceVisibility: 'hidden' }}>
+                      <img src="https://api.dicebear.com/9.x/bottts-neutral/svg?seed=arise1" alt="Guest Node Avatar" className="w-full h-full object-cover scale-110 translate-y-1 brightness-110" />
                     </div>
 
                     {/* Back: Community QR Code */}

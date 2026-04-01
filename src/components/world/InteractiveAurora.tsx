@@ -230,10 +230,11 @@ const RepulsionNetwork = () => {
 };
 
 export const InteractiveAurora = () => {
-  const [isMounted, setIsMounted] = useState(false);
-
   useEffect(() => {
-    setIsMounted(true);
+    // Force canvas sizing recalculation immediately after React payload hydration. This guarantees the background paints immediately without needing a tab-switch.
+    const timer = setTimeout(() => {
+      window.dispatchEvent(new Event('resize'));
+    }, 150);
     
     // Start tracking hover when mouse moves anywhere in window
     const handleMove = () => { pointerState.isHovered = true; };
@@ -243,17 +244,17 @@ export const InteractiveAurora = () => {
     document.addEventListener('pointerleave', handleLeave);
     
     return () => {
+      clearTimeout(timer);
       window.removeEventListener('pointermove', handleMove);
       document.removeEventListener('pointerleave', handleLeave);
     };
   }, []);
 
-  if (!isMounted) return null;
-
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+    <div className="absolute inset-0 overflow-hidden pointer-events-none z-0 w-full h-full">
       <Canvas 
-        eventSource={document.body}
+        className="w-full h-full"
+        eventSource={typeof document !== 'undefined' ? document.body : undefined}
         eventPrefix="client"
         camera={{ position: [0, 0, 7], fov: 45 }}
       >

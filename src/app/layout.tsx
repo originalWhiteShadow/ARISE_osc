@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { SceneLayer } from "@/components/SceneLayer";
 import { AppShell } from "@/components/AppShell";
 import { LucidityProvider } from "@/components/LucidityProvider";
+import { ClientScene } from "@/components/ClientScene";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -61,8 +61,8 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased overflow-x-hidden`}
     >
       <body className="min-h-screen flex flex-col bg-[--background] text-[--foreground] overflow-x-hidden">
-        {/* World Layer: Persistent 3D environment - lazy-loaded */}
-        <SceneLayer />
+        {/* World Layer: Persistent 3D environment - safe client mount */}
+        <ClientScene />
 
         {/* UI Layer: Route-aware shell and pages with lucidity tracking */}
         <LucidityProvider>
