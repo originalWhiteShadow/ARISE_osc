@@ -234,17 +234,29 @@ export const InteractiveAurora = () => {
 
   useEffect(() => {
     setIsMounted(true);
+    
+    // Start tracking hover when mouse moves anywhere in window
+    const handleMove = () => { pointerState.isHovered = true; };
+    const handleLeave = () => { pointerState.isHovered = false; };
+    
+    window.addEventListener('pointermove', handleMove);
+    document.addEventListener('pointerleave', handleLeave);
+    
+    return () => {
+      window.removeEventListener('pointermove', handleMove);
+      document.removeEventListener('pointerleave', handleLeave);
+    };
   }, []);
 
   if (!isMounted) return null;
 
   return (
-    <div 
-      className="absolute inset-0 overflow-hidden pointer-events-auto z-0"
-      onPointerEnter={() => { pointerState.isHovered = true; }}
-      onPointerLeave={() => { pointerState.isHovered = false; }}
-    >
-      <Canvas camera={{ position: [0, 0, 7], fov: 45 }}>
+    <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+      <Canvas 
+        eventSource={document.body}
+        eventPrefix="client"
+        camera={{ position: [0, 0, 7], fov: 45 }}
+      >
         <ambientLight intensity={0.5} />
         
         {/* The Node Network Blob */}

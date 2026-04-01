@@ -2,27 +2,41 @@
 
 import Link from "next/link";
 import { 
-  IoSparkles, 
-  IoRocketOutline, 
-  IoPeopleOutline,
-  IoFlame,
   IoArrowForwardOutline,
   IoFlash,
+  IoCodeWorkingOutline,
   IoCheckmarkCircle,
   IoInfinite,
   IoPlanetOutline,
-  IoCodeWorkingOutline
+  IoSparkles,
+  IoRocketOutline,
+  IoPeopleOutline
 } from "react-icons/io5";
 import { InteractiveAurora } from "@/components/world/InteractiveAurora";
+import { Meteors } from "@/components/world/Meteors";
 
 export default function Home() {
+  const highlights = [
+    { title: "Project: NeuralWeave", text: "A decentralized learning platform built in 48 hours by a swarm of 50 developers.", icon: IoCodeWorkingOutline, color: "text-[--color-brand-cyan]" },
+    { title: "Quantum Release v2.0", text: "The fastest execution engine now open sourced and adopted by 500+ projects.", icon: IoRocketOutline, color: "text-[--color-brand-pink]" },
+    { title: "10k Member Milestone", text: "Our ecosystem reached a new level of consciousness with 10k active nodes.", icon: IoPeopleOutline, color: "text-[--color-brand-gold]" },
+    { title: "System Calibration", text: "Global node synchrony achieved 99.9% resonance across all active clusters.", icon: IoPlanetOutline, color: "text-[--color-brand-violet]" },
+    { title: "Protocol Upgrade", text: "The new resonance protocol reduces peer-to-peer latency by 45%.", icon: IoFlash, color: "text-emerald-400" },
+    { title: "Community Grant", text: "$500k distributed to top 10 open-source consciousness initiatives.", icon: IoSparkles, color: "text-[--color-brand-cyan]" },
+  ];
+
   return (
-    <main className="relative min-h-screen flex flex-col overflow-hidden isolate">
-      {/* ===== HERO SECTION ===== */}
-      <section className="relative z-10 min-h-[90vh] flex flex-col items-center justify-center p-6 md:p-10 overflow-hidden">
-        {/* Interactive Space and 3D Blob Background */}
+    <main className="relative min-h-screen flex flex-col isolate">
+      {/* Background Layer - Fixed and Continuous */}
+      <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
         <InteractiveAurora />
 
+        {/* Subtle moving meteor shower */}
+        <Meteors />
+      </div>
+
+      {/* ===== HERO SECTION ===== */}
+      <section className="relative z-10 min-h-screen flex flex-col items-center justify-center p-6 md:p-10">
         {/* Floating accent lines - kept for structural framing */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-20 left-10 w-px h-48 bg-gradient-to-b from-[--color-brand-cyan] to-transparent opacity-20 animate-float" />
@@ -31,15 +45,8 @@ export default function Home() {
 
         {/* Hero Content */}
         <div className="max-w-5xl mx-auto text-center space-y-8 relative z-10 pt-16 pointer-events-none">
-          {/* Brand Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 glass-accent shadow-[0_0_20px_rgba(26,229,229,0.1)] hover:border-white/20 transition-all duration-500 animate-fade-in pointer-events-auto cursor-pointer">
-            <span className="w-2 h-2 rounded-full bg-[--color-brand-cyan] animate-pulse-subtle shadow-[0_0_8px_var(--color-brand-cyan)]" />
-            <span className="text-[10px] font-bold text-white uppercase tracking-[0.15em] transition-colors">
-              The Conscious OS is Live
-            </span>
-          </div>
 
-          {/* Main Heading - Scaled down for better balance */}
+          {/* Main Heading */}
           <div className="space-y-4 animate-slide-up animation-delay-500">
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-black tracking-tight leading-tight">
               <span className="inline-block pb-2">
@@ -70,16 +77,6 @@ export default function Home() {
             </h1>
           </div>
 
-          {/* Subheading */}
-          <div className="space-y-4 max-w-3xl mx-auto animate-slide-up animation-delay-700 pointer-events-auto">
-            <p className="text-lg md:text-xl font-light text-white/80 leading-relaxed tracking-tight">
-              A collective intelligence engine where{" "}
-              <span className="font-semibold text-white">projects</span>,{" "}
-              <span className="font-semibold text-white">ideas</span>, and{" "}
-              <span className="font-semibold text-white">people</span> evolve together.
-            </p>
-          </div>
-
           {/* CTA Buttons - High Visibility */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-6 animate-slide-up animation-delay-1000 pointer-events-auto relative z-20">
             <Link
@@ -89,160 +86,64 @@ export default function Home() {
               <span className="relative z-10">Enter Ecosystem</span>
               <IoArrowForwardOutline className="text-lg group-hover:translate-x-1 transition-transform duration-300 relative z-10" />
             </Link>
-            
-            <Link
-              href="/projects"
-              className="group relative px-6 py-3 rounded-xl font-bold uppercase tracking-wider text-sm text-black bg-[--color-brand-cyan] hover:bg-cyan-300 shadow-[0_0_30px_rgba(26,229,229,0.4)] transition-colors duration-300 flex items-center justify-center gap-2"
-            >
-              <IoPlanetOutline className="text-lg text-black group-hover:rotate-12 transition-transform duration-300" />
-              <span>Explore Projects</span>
-            </Link>
-          </div>
-
-          {/* Stats Grid - Tighter glass cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto pt-16 pb-8 animate-slide-up animation-delay-1200 pointer-events-auto">
-            {[
-              { icon: IoCodeWorkingOutline, label: "Projects Alive", value: "2,400+", color: "text-[--color-brand-cyan]" },
-              { icon: IoPeopleOutline, label: "Conscious Creators", value: "11k+", color: "text-[--color-brand-pink]" },
-              { icon: IoInfinite, label: "Evolution Cycles", value: "∞", color: "text-[--color-brand-gold]" },
-            ].map((stat, idx) => {
-              const Icon = stat.icon;
-              return (
-                <div
-                  key={idx}
-                  className="group relative overflow-hidden rounded-xl glass p-4 hover:-translate-y-1 transition-transform duration-500 border border-white/5"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-br from-[--color-brand-cyan]/5 to-[--color-brand-pink]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className="relative flex items-center gap-4">
-                    <div className={`p-3 rounded-lg bg-white/5 border border-white/5 ${stat.color} group-hover:scale-110 transition-transform duration-500`}>
-                      <Icon className="text-xl" />
-                    </div>
-                    <div className="text-left space-y-0.5">
-                      <p className="text-xl font-black text-white tracking-tight">{stat.value}</p>
-                      <p className="text-[10px] text-white/50 uppercase tracking-widest font-semibold">{stat.label}</p>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
           </div>
         </div>
       </section>
 
-      {/* ===== FEATURES SECTION ===== */}
-      <section className="relative z-10 py-20 px-6 md:px-12 border-t border-white/5 bg-black/40 backdrop-blur-xl">
-        <div className="max-w-6xl mx-auto">
-          {/* Section Header */}
-          <div className="text-center mb-16 space-y-4 max-w-2xl mx-auto">
-            <span className="px-4 py-1.5 rounded-full glass-accent text-[--color-brand-cyan] text-[10px] font-bold uppercase tracking-widest shadow-[0_0_15px_rgba(26,229,229,0.1)] inline-block">
-              Architecture of Tomorrow
-            </span>
-            <h2 className="text-4xl md:text-5xl font-black text-white tracking-tight">
-              Built for <br/>
-              <span
-                className="text-transparent inline-block mt-1"
-                style={{
-                  backgroundImage: "linear-gradient(135deg, var(--color-brand-cyan) 0%, var(--color-brand-pink) 100%)",
-                  WebkitBackgroundClip: "text",
-                  backgroundClip: "text",
-                }}
-              >
-                Resonance
-              </span>
-            </h2>
-            <p className="text-base text-white/60 font-light leading-relaxed">
-              ARISE isn&apos;t just another platform. It&apos;s a living, breathing ecosystem designed to amplify human creativity and collective intelligence.
-            </p>
-          </div>
+      {/* ===== HI-FI MARQUEE HIGHLIGHTS ===== */}
+      <section className="relative z-10 py-16 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6 md:px-12 mb-10 text-center animate-slide-up animation-delay-1200">
+          <span className="px-4 py-1.5 rounded-full glass-accent text-[--color-brand-cyan] text-[10px] font-bold uppercase tracking-widest shadow-[0_0_15px_rgba(26,229,229,0.1)] inline-block">
+            Live Stream
+          </span>
+          <h2 className="text-3xl font-black text-white tracking-tight mt-4">
+            Ecosystem <span className="text-[--color-brand-pink]">Highlights</span>
+          </h2>
+        </div>
 
-          {/* Feature Cards - Properly Scaled */}
-          <div className="grid md:grid-cols-2 gap-6">
-            {[
-              {
-                icon: IoSparkles,
-                title: "Lucid Interfaces",
-                description: "Experience code and collaboration through an immersive, distraction-free environment that adapts to your mental state.",
-                color: "text-[--color-brand-cyan]",
-                gradient: "from-[--color-brand-cyan] to-blue-500"
-              },
-              {
-                icon: IoRocketOutline,
-                title: "Quantum Scaling",
-                description: "Built on absolute cutting-edge technology. Zero-latency interactions, instant project spawning, and infinite scale.",
-                color: "text-[--color-brand-pink]",
-                gradient: "from-[--color-brand-pink] to-purple-500"
-              },
-              {
-                icon: IoPeopleOutline,
-                title: "Swarm Intelligence",
-                description: "Connections are made dynamically. Find the right collaborators for your projects at the exact moment you need them.",
-                color: "text-[--color-brand-gold]",
-                gradient: "from-[--color-brand-gold] to-orange-500"
-              },
-              {
-                icon: IoFlame,
-                title: "Absolute Freedom",
-                description: "100% open-source core. No lock-in, no paywalls. Own your data, own your code, own your digital destiny.",
-                color: "text-red-400",
-                gradient: "from-red-400 to-rose-600"
-              },
-            ].map((feature, idx) => {
-              const Icon = feature.icon;
+        {/* Marquee Track Container */}
+        <div className="relative w-full flex flex-col group py-4 pointer-events-auto animate-fade-in animation-delay-1200">
+          
+          {/* Subtle gradient edges to fade out the marquee */}
+          <div className="absolute inset-y-0 left-0 w-16 md:w-40 bg-gradient-to-r from-black via-black/80 to-transparent z-20 pointer-events-none" />
+          <div className="absolute inset-y-0 right-0 w-16 md:w-40 bg-gradient-to-l from-black via-black/80 to-transparent z-20 pointer-events-none" />
+
+          {/* Wrapping container for the infinite loop */}
+          <div className="flex animate-marquee group-hover:[animation-play-state:paused] whitespace-nowrap gap-6 w-max">
+            
+            {/* Render two identical sets of cards for seamless looping */}
+            {[...highlights, ...highlights].map((item, idx) => {
+              const Icon = item.icon;
               return (
-                <div
-                  key={idx}
-                  className="group relative overflow-hidden rounded-2xl glass p-8 hover:border-white/20 transition-all duration-700"
+                <div 
+                  key={idx} 
+                  className="relative glass w-72 md:w-96 p-6 rounded-2xl border border-white/5 hover:border-white/20 transition-all duration-500 shrink-0 flex flex-col cursor-pointer hover:-translate-y-2 hover:shadow-[0_10px_40px_rgba(26,229,229,0.1)]"
                 >
-                  <div className={`absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r ${feature.gradient} opacity-50 group-hover:opacity-100 transition-opacity`} />
+                  <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   
-                  {/* Inner glow on hover */}
-                  <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-[0.03] transition-opacity duration-700`} />
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-2xl" />
 
-                  <div className="relative space-y-4">
-                    <div className="inline-flex p-3 rounded-xl bg-white/5 border border-white/10 group-hover:scale-110 transition-transform duration-500">
-                      <Icon className={`text-3xl ${feature.color}`} />
+                  <div className="flex items-center gap-4 mb-4 relative z-10">
+                    <div className="w-12 h-12 rounded-xl bg-black/40 border border-white/10 flex items-center justify-center transition-transform duration-500 shrink-0 shadow-inner">
+                      <Icon className={`text-2xl ${item.color}`} />
                     </div>
-                    <h3 className="text-xl font-bold text-white tracking-tight">{feature.title}</h3>
-                    <p className="text-sm text-white/60 leading-relaxed font-light">{feature.description}</p>
+                    <h3 className="text-lg font-bold text-white leading-tight tracking-tight whitespace-normal break-words">
+                      {item.title}
+                    </h3>
                   </div>
+                  <p className="text-sm text-white/60 leading-relaxed font-light whitespace-normal break-words relative z-10">
+                    {item.text}
+                  </p>
                 </div>
               );
             })}
-          </div>
-        </div>
-      </section>
-
-      {/* ===== CTA SECTION ===== */}
-      <section className="relative z-10 py-20 px-6 md:px-12 overflow-hidden border-t border-white/5 bg-black/60">
-        <div className="max-w-4xl mx-auto relative z-10">
-          <div className="relative group rounded-3xl overflow-hidden">
-            {/* Animated background gradient */}
-            <div className="absolute inset-0 bg-gradient-to-br from-[--color-brand-cyan]/10 via-[--color-brand-pink]/10 to-[--color-brand-violet]/10 opacity-50 blur-3xl animate-pulse-subtle" />
             
-            {/* Glass Card */}
-            <div className="relative glass p-10 md:p-16 border border-white/10 text-center space-y-8 group-hover:border-white/20 transition-colors duration-500">
-              <div className="space-y-4 max-w-2xl mx-auto">
-                <h2 className="text-4xl md:text-5xl font-black text-white tracking-tight">
-                  Ready to Awaken?
-                </h2>
-                <p className="text-lg text-white/70 font-light">
-                  Join the most advanced conscious developer community on the planet.
-                </p>
-              </div>
-
-              <div className="flex flex-col sm:flex-row gap-4 justify-center relative z-20">
-                <Link
-                  href="/ecosystem"
-                  className="px-8 py-4 rounded-xl font-bold uppercase tracking-wider text-sm text-black bg-white hover:bg-gray-200 transition-colors duration-300 shadow-[0_0_30px_rgba(255,255,255,0.4)] flex items-center justify-center gap-2 hover:scale-105"
-                >
-                  <span>Initialize Connection</span>
-                  <IoFlash className="text-lg text-[--color-brand-cyan]" />
-                </Link>
-              </div>
-            </div>
           </div>
         </div>
       </section>
+      
+      {/* Spacer to allow scrolling past marquee smoothly */}
+      <div className="h-40" />
     </main>
   );
 }
