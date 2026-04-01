@@ -18,6 +18,10 @@
 /out/
 
 # production
+build/
+
+# production
+/dist
 /build
 
 # misc
