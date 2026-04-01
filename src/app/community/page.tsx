@@ -127,7 +127,7 @@ export default function CommunityPage() {
           </div>
 
           {/* Live Stats */}
-          <div className="grid grid-cols-3 gap-4 mb-12 p-6 rounded-xl border border-white/10 bg-linear-to-r from-[--brand-purple]/10 to-[--brand-midnight]/10 backdrop-blur-sm">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-12 p-6 rounded-2xl border border-white/10 glass shadow-2xl backdrop-blur-md">
             {liveStats.map((stat) => (
               <div key={stat.label} className="text-center">
                 <div className={`text-3xl font-bold ${stat.color}`}>{stat.value}</div>
@@ -147,7 +147,7 @@ export default function CommunityPage() {
                 <h2 className="text-2xl font-bold text-[--foreground]">Active Now</h2>
                 <span className="text-sm text-[--foreground] opacity-60">({activeMembers.length})</span>
               </div>
-              <div className="rounded-xl p-6 border border-white/10 bg-linear-to-r from-[--brand-purple]/10 to-[--brand-midnight]/10 backdrop-blur-sm">
+              <div className="rounded-2xl p-6 border border-white/10 glass shadow-xl backdrop-blur-md">
                 <LiveActivity members={activeMembers} />
               </div>
             </div>
@@ -191,7 +191,7 @@ export default function CommunityPage() {
               <div className="w-2 h-2 rounded-full bg-[--color-brand-gold] animate-pulse" />
               <h2 className="text-2xl font-bold text-[--foreground]">Recent Activity</h2>
             </div>
-            <div className="rounded-xl border border-white/10 bg-linear-to-r from-[--brand-purple]/10 to-[--brand-midnight]/10 backdrop-blur-sm p-6">
+            <div className="rounded-2xl border border-white/10 glass shadow-xl backdrop-blur-md p-6">
               <ActivityFeed entries={recentActivity} />
             </div>
           </div>

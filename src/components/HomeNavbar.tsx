@@ -46,8 +46,8 @@ export function HomeNavbar() {
                 <IoPersonOutline size={20} />
               </Link>
               
-              {/* Dropdown Popup */}
-              <div className="absolute right-0 top-full mt-3 w-64 rounded-2xl glass border border-white/10 shadow-[0_15px_40px_rgba(0,0,0,0.6)] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 p-5 backdrop-blur-[24px]">
+              {/* Dropdown Popup (Desktop Only) */}
+              <div className="absolute right-0 top-full mt-3 w-64 rounded-2xl glass border border-white/10 shadow-[0_15px_40px_rgba(0,0,0,0.6)] opacity-0 invisible hidden md:group-hover:opacity-100 md:group-hover:visible transition-all duration-300 transform translate-y-2 md:group-hover:translate-y-0 p-5 backdrop-blur-[24px]">
                  <div className="flex items-center gap-4 mb-4">
                      <div className="w-12 h-12 rounded-full bg-linear-to-br from-[--color-brand-cyan] to-[--color-brand-pink] shrink-0 border-2 border-white/20 shadow-inner flex items-center justify-center text-white font-bold opacity-90">
                        GN

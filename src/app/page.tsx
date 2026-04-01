@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 import { 
   IoArrowForwardOutline,
   IoFlash,
@@ -14,6 +15,28 @@ import {
 } from "react-icons/io5";
 
 export default function Home() {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [isHovered, setIsHovered] = useState(false);
+
+  useEffect(() => {
+    let animationFrameId: number;
+
+    const scroll = () => {
+      if (!isHovered && scrollRef.current) {
+        scrollRef.current.scrollLeft += 1.5; // Auto-scroll speed
+        
+        // Endless loop jump
+        if (scrollRef.current.scrollLeft >= scrollRef.current.scrollWidth / 2) {
+          scrollRef.current.scrollLeft = 0;
+        }
+      }
+      animationFrameId = requestAnimationFrame(scroll);
+    };
+
+    animationFrameId = requestAnimationFrame(scroll);
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [isHovered]);
+
   const highlights = [
     { title: "Project: NeuralWeave", text: "A decentralized learning platform built in 48 hours by a swarm of 50 developers.", icon: IoCodeWorkingOutline, color: "text-[--color-brand-cyan]" },
     { title: "Quantum Release v2.0", text: "The fastest execution engine now open sourced and adopted by 500+ projects.", icon: IoRocketOutline, color: "text-[--color-brand-pink]" },
@@ -90,8 +113,16 @@ export default function Home() {
           <div className="absolute inset-y-0 left-0 w-8 md:w-24 lg:w-40 bg-gradient-to-r from-black via-black/80 to-transparent z-20 pointer-events-none" />
           <div className="absolute inset-y-0 right-0 w-8 md:w-24 lg:w-40 bg-gradient-to-l from-black via-black/80 to-transparent z-20 pointer-events-none" />
 
-          {/* Wrapping container for the infinite loop */}
-          <div className="flex animate-marquee group-hover:[animation-play-state:paused] whitespace-nowrap gap-6 w-max">
+          {/* Native scrollable container with JS assisting the infinite auto-pan */}
+          <div 
+            ref={scrollRef}
+            className="flex overflow-x-auto whitespace-nowrap gap-6 w-full py-2 px-8 touch-pan-x"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            onTouchStart={() => setIsHovered(true)}
+            onTouchEnd={() => setIsHovered(false)}
+          >
             
             {/* Render two identical sets of cards for seamless looping */}
             {[...highlights, ...highlights].map((item, idx) => {

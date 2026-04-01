@@ -1,10 +1,14 @@
 "use client";
 
+import { useState } from "react";
+
 import Link from 'next/link';
 import { PageWrapper } from "@/components/PageWrapper";
-import { IoPersonOutline, IoSettingsOutline, IoTimeOutline, IoCodeSlashOutline, IoRocketOutline } from "react-icons/io5";
+import { IoPersonOutline, IoSettingsOutline, IoTimeOutline, IoCodeSlashOutline, IoRocketOutline, IoQrCodeOutline } from "react-icons/io5";
 
 export default function ProfilePage() {
+  const [isFlipped, setIsFlipped] = useState(false);
+  
   return (
     <PageWrapper>
       <div className="relative z-10 min-h-screen w-full overflow-x-hidden px-4 pt-28 pb-10 md:px-8 md:pt-32 md:pb-12">
@@ -16,8 +20,31 @@ export default function ProfilePage() {
               
               {/* Primary Identity Glass Card */}
               <div className="rounded-2xl glass border border-white/10 p-8 shadow-[0_15px_40px_rgba(0,0,0,0.6)] backdrop-blur-[24px] text-center">
-                <div className="w-32 h-32 rounded-full bg-linear-to-br from-[--color-brand-cyan] to-[--color-brand-pink] mx-auto mb-6 flex items-center justify-center border-4 border-white/20 shadow-[0_0_30px_rgba(26,229,229,0.3)]">
-                  <span className="text-4xl font-black text-white drop-shadow-md">GN</span>
+                {/* Interactive 3D Flip Avatar -> QR Code */}
+                <div 
+                  className="w-32 h-32 mx-auto mb-6 cursor-pointer transform hover:scale-105 transition-transform duration-300" 
+                  style={{ perspective: '1000px' }}
+                  onClick={() => setIsFlipped(!isFlipped)}
+                >
+                  <div 
+                    className="relative w-full h-full transition-all duration-700" 
+                    style={{ 
+                      transformStyle: 'preserve-3d',
+                      transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)' 
+                    }}
+                  >
+                    
+                    {/* Front: Cosmic Avatar */}
+                    <div className="absolute inset-0 w-full h-full flex items-center justify-center rounded-full bg-linear-to-br from-[--color-brand-cyan] to-[--color-brand-pink] border-4 border-white/20 shadow-[0_0_30px_rgba(26,229,229,0.3)]" style={{ backfaceVisibility: 'hidden' }}>
+                      <span className="text-4xl font-black text-white drop-shadow-md">GN</span>
+                    </div>
+
+                    {/* Back: Community QR Code */}
+                    <div className="absolute inset-0 w-full h-full flex items-center justify-center rounded-full bg-white border-4 border-[--color-brand-cyan] shadow-[0_0_30px_rgba(255,255,255,0.4)]" style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}>
+                      <IoQrCodeOutline className="w-16 h-16 text-black" />
+                    </div>
+
+                  </div>
                 </div>
                 <h1 className="text-3xl font-black text-white mb-1 tracking-tight">Guest Node</h1>
                 <p className="text-[--color-brand-cyan] font-bold text-sm tracking-widest uppercase mb-6">Tier: Observer</p>
