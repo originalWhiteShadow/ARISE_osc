@@ -79,7 +79,7 @@ export default function ProjectsPage() {
 
   return (
     <PageWrapper>
-      <div className="relative z-10 min-h-screen w-full overflow-x-hidden px-4 py-10 md:px-8 md:py-12">
+      <div className="relative z-10 min-h-screen w-full overflow-x-hidden px-4 pt-28 pb-10 md:px-8 md:pt-32 md:pb-12">
         <div className="mx-auto w-full max-w-6xl space-y-12">
           {/* Header */}
           <div className="space-y-4 text-center">

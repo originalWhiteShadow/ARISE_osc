@@ -12,8 +12,6 @@ import {
   IoRocketOutline,
   IoPeopleOutline
 } from "react-icons/io5";
-import { InteractiveAurora } from "@/components/world/InteractiveAurora";
-import { Meteors } from "@/components/world/Meteors";
 
 export default function Home() {
   const highlights = [
@@ -27,16 +25,9 @@ export default function Home() {
 
   return (
     <main className="relative min-h-screen flex flex-col isolate">
-      {/* Background Layer - Fixed and Continuous */}
-      <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
-        <InteractiveAurora />
-
-        {/* Subtle moving meteor shower */}
-        <Meteors />
-      </div>
 
       {/* ===== HERO SECTION ===== */}
-      <section className="relative z-10 min-h-screen flex flex-col items-center justify-center p-6 md:p-10">
+      <section className="relative z-10 min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 md:px-10 pt-20">
         {/* Floating accent lines - kept for structural framing */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-20 left-10 w-px h-48 bg-gradient-to-b from-[--color-brand-cyan] to-transparent opacity-20 animate-float" />
@@ -48,7 +39,7 @@ export default function Home() {
 
           {/* Main Heading */}
           <div className="space-y-4 animate-slide-up animation-delay-500">
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-black tracking-tight leading-tight">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight leading-tight">
               <span className="inline-block pb-2">
                 <span
                   className="text-white drop-shadow-[0_0_20px_rgba(255,255,255,0.2)] pointer-events-auto"
@@ -77,16 +68,7 @@ export default function Home() {
             </h1>
           </div>
 
-          {/* CTA Buttons - High Visibility */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center pt-6 animate-slide-up animation-delay-1000 pointer-events-auto relative z-20">
-            <Link
-              href="/ecosystem"
-              className="group relative px-6 py-3 rounded-xl font-bold uppercase tracking-wider text-sm text-black bg-white hover:bg-gray-200 shadow-[0_0_30px_rgba(255,255,255,0.4)] transition-all duration-300 flex items-center justify-center gap-2"
-            >
-              <span className="relative z-10">Enter Ecosystem</span>
-              <IoArrowForwardOutline className="text-lg group-hover:translate-x-1 transition-transform duration-300 relative z-10" />
-            </Link>
-          </div>
+          {/* Removed CTA Buttons per user request */}
         </div>
       </section>
 
@@ -104,9 +86,9 @@ export default function Home() {
         {/* Marquee Track Container */}
         <div className="relative w-full flex flex-col group py-4 pointer-events-auto animate-fade-in animation-delay-1200">
           
-          {/* Subtle gradient edges to fade out the marquee */}
-          <div className="absolute inset-y-0 left-0 w-16 md:w-40 bg-gradient-to-r from-black via-black/80 to-transparent z-20 pointer-events-none" />
-          <div className="absolute inset-y-0 right-0 w-16 md:w-40 bg-gradient-to-l from-black via-black/80 to-transparent z-20 pointer-events-none" />
+          {/* Subtle gradient edges to fade out the marquee (Shrunk on mobile) */}
+          <div className="absolute inset-y-0 left-0 w-8 md:w-24 lg:w-40 bg-gradient-to-r from-black via-black/80 to-transparent z-20 pointer-events-none" />
+          <div className="absolute inset-y-0 right-0 w-8 md:w-24 lg:w-40 bg-gradient-to-l from-black via-black/80 to-transparent z-20 pointer-events-none" />
 
           {/* Wrapping container for the infinite loop */}
           <div className="flex animate-marquee group-hover:[animation-play-state:paused] whitespace-nowrap gap-6 w-max">
@@ -117,7 +99,7 @@ export default function Home() {
               return (
                 <div 
                   key={idx} 
-                  className="relative glass w-72 md:w-96 p-6 rounded-2xl border border-white/5 hover:border-white/20 transition-all duration-500 shrink-0 flex flex-col cursor-pointer hover:-translate-y-2 hover:shadow-[0_10px_40px_rgba(26,229,229,0.1)]"
+                  className="relative glass w-[280px] sm:w-[320px] md:w-[380px] p-5 sm:p-6 rounded-2xl border border-white/5 hover:border-white/20 transition-all duration-500 shrink-0 flex flex-col cursor-pointer hover:-translate-y-2 hover:shadow-[0_10px_40px_rgba(26,229,229,0.1)]"
                 >
                   <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   

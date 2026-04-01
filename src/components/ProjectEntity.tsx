@@ -62,7 +62,7 @@ export function ProjectEntity({
   return (
     <Link href={`/project/${id}`}>
       <div
-        className={`relative group cursor-pointer h-64 rounded-2xl border backdrop-blur-sm transition-all duration-500 ${colors.border} ${colors.glow} overflow-hidden`}
+        className={`relative group cursor-pointer h-64 rounded-2xl bg-white/5 backdrop-blur-[12px] border border-white/20 transition-all duration-500 hover:bg-white/10 ${colors.glow} overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.4)] hover:shadow-[0_8px_32px_rgba(255,255,255,0.1)]`}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -86,7 +86,7 @@ export function ProjectEntity({
               </h3>
               <div className="flex items-center gap-2">
                 <div className={`w-2 h-2 rounded-full ${statusInfo.dot}`} />
-                <span className="text-xs text-[--foreground] opacity-60">
+                <span className="text-xs text-white/90 font-medium tracking-wider uppercase">
                   {statusInfo.label}
                 </span>
               </div>
@@ -99,7 +99,7 @@ export function ProjectEntity({
               isHovered ? "opacity-100" : "opacity-0"
             }`}
           >
-            <p className="text-sm text-[--foreground] opacity-70 leading-relaxed line-clamp-3">
+            <p className="text-sm text-white/90 font-medium leading-relaxed line-clamp-3 drop-shadow-md">
               {description}
             </p>
           </div>
@@ -109,7 +109,7 @@ export function ProjectEntity({
             {/* Contributor count */}
             <div className="flex items-center gap-2 text-xs">
               <span className={`${colors.text}`}>👥</span>
-              <span className="text-[--foreground] opacity-70">
+              <span className="text-white/90 font-medium drop-shadow-md">
                 {contributors} contributor{contributors !== 1 ? "s" : ""}
               </span>
             </div>
@@ -123,13 +123,13 @@ export function ProjectEntity({
               {tags.slice(0, 2).map((tag) => (
                 <span
                   key={tag}
-                  className="px-2 py-1 text-xs rounded-full bg-white/5 border border-white/10 text-[--foreground]"
+                  className="px-2 py-1 text-xs rounded-full glass border border-white/20 text-white shadow-md font-medium"
                 >
                   {tag}
                 </span>
               ))}
               {tags.length > 2 && (
-                <span className="px-2 py-1 text-xs rounded-full bg-white/5 border border-white/10 text-[--foreground] opacity-60">
+                <span className="px-2 py-1 text-xs rounded-full glass border border-white/20 text-white opacity-80 font-medium">
                   +{tags.length - 2}
                 </span>
               )}

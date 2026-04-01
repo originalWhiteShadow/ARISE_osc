@@ -111,9 +111,8 @@ export function EcosystemVisualization() {
     const width = canvas.width;
     const height = canvas.height;
 
-    // Clear with dark background
-    ctx.fillStyle = "rgba(6, 5, 18, 0.1)";
-    ctx.fillRect(0, 0, width, height);
+    // Clear completely transparently, allowing the CSS glass background to show through naturally
+    ctx.clearRect(0, 0, width, height);
 
     // Center point
     const centerX = width / 2;
@@ -254,21 +253,21 @@ export function EcosystemVisualization() {
         height={600}
         onMouseMove={handleCanvasMouseMove}
         onClick={handleCanvasClick}
-        className="rounded-lg border border-white/10 bg-linear-to-br from-[--brand-purple]/20 to-[--brand-midnight]/40 cursor-crosshair w-full h-auto max-w-4xl mx-auto block"
+        className="rounded-2xl border border-white/20 bg-white/5 backdrop-blur-[12px] cursor-crosshair w-full h-auto max-w-4xl mx-auto block shadow-[0_8px_32px_rgba(0,0,0,0.4)] transition-all hover:bg-white/10"
       />
 
       {/* Node Info Panel */}
       {selectedNode && (
-        <div className="p-4 rounded-lg border border-[--color-brand-cyan]/50 bg-linear-to-r from-[--brand-purple]/30 to-[--brand-midnight]/40 backdrop-blur-sm">
+        <div className="p-4 rounded-lg border border-white/10 glass shadow-xl mt-4 max-w-sm mx-auto w-full">
           {nodes
             .filter((n) => n.id === selectedNode)
             .map((node) => (
               <div key={node.id}>
-                <h3 className="text-lg font-bold text-[--foreground] mb-2">{node.label}</h3>
-                <p className="text-[--foreground] opacity-70 text-sm mb-3">
-                  Type: <span className="capitalize">{node.type}</span>
+                <h3 className="text-lg font-bold text-white mb-2">{node.label}</h3>
+                <p className="text-white/80 text-sm mb-3">
+                  Type: <span className="capitalize font-semibold text-white">{node.type}</span>
                 </p>
-                <p className="text-[--foreground] opacity-70 text-sm">
+                <p className="text-white/80 text-sm">
                   Connections: {node.connections.length}
                 </p>
               </div>
@@ -277,22 +276,22 @@ export function EcosystemVisualization() {
       )}
 
       {/* Controls */}
-      <div className="flex gap-2 justify-center">
+      <div className="flex gap-4 justify-center mt-6">
         <button
           onClick={() => setZoom(Math.max(0.5, zoom - 0.2))}
-          className="px-4 py-2 rounded-lg bg-white/10 border border-white/20 hover:bg-white/20 text-[--foreground] transition-all"
+          className="px-6 py-2.5 rounded-full glass border border-white/20 hover:bg-white/10 hover:border-white/40 hover:scale-105 text-white font-bold tracking-wide transition-all shadow-lg backdrop-blur-md"
         >
           Zoom Out
         </button>
         <button
           onClick={() => setZoom(1)}
-          className="px-4 py-2 rounded-lg bg-white/10 border border-white/20 hover:bg-white/20 text-[--foreground] transition-all"
+          className="px-6 py-2.5 rounded-full glass border border-[--color-brand-cyan]/40 hover:bg-[--color-brand-cyan]/20 hover:scale-105 text-white font-bold tracking-wide transition-all shadow-[0_0_15px_rgba(26,229,229,0.2)] backdrop-blur-md"
         >
           Reset
         </button>
         <button
           onClick={() => setZoom(Math.min(3, zoom + 0.2))}
-          className="px-4 py-2 rounded-lg bg-white/10 border border-white/20 hover:bg-white/20 text-[--foreground] transition-all"
+          className="px-6 py-2.5 rounded-full glass border border-white/20 hover:bg-white/10 hover:border-white/40 hover:scale-105 text-white font-bold tracking-wide transition-all shadow-lg backdrop-blur-md"
         >
           Zoom In
         </button>

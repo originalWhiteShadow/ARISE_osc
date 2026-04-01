@@ -6,7 +6,7 @@ import { PageWrapper } from "@/components/PageWrapper";
 export default function ProjectDetailPage({ params }: { params: { id: string } }) {
   return (
     <PageWrapper>
-      <div className="relative z-10 min-h-screen w-full overflow-x-hidden px-4 py-10 md:px-8 md:py-12">
+      <div className="relative z-10 min-h-screen w-full overflow-x-hidden px-4 pt-28 pb-10 md:px-8 md:pt-32 md:pb-12">
       <div className="mx-auto w-full max-w-5xl">
         <Link 
           href="/projects" 
