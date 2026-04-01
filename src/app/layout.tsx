@@ -4,6 +4,7 @@ import "./globals.css";
 import { AppShell } from "@/components/AppShell";
 import { LucidityProvider } from "@/components/LucidityProvider";
 import { ClientScene } from "@/components/ClientScene";
+import { BootSequence } from "@/components/BootSequence";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -61,6 +62,9 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased overflow-x-hidden`}
     >
       <body className="min-h-screen flex flex-col bg-[--background] text-[--foreground] overflow-x-hidden">
+        {/* Splash Loader */}
+        <BootSequence />
+        
         {/* World Layer: Persistent 3D environment - safe client mount */}
         <ClientScene />
 

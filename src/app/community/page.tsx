@@ -115,7 +115,7 @@ export default function CommunityPage() {
   return (
     <PageWrapper>
       <div className="relative z-10 min-h-screen w-full overflow-x-hidden px-4 pt-28 pb-10 md:px-8 md:pt-32 md:pb-12">
-        <div className="mx-auto w-full max-w-5xl">
+        <div className="mx-auto w-full max-w-5xl animate-fade-in">
           {/* Header */}
           <div className="text-center mb-12">
             <h1 className="text-5xl md:text-6xl font-bold text-transparent bg-clip-text bg-linear-to-r from-[--color-brand-pink] to-[--color-brand-cyan] mb-4">

@@ -14,7 +14,7 @@ export default function ProfilePage() {
       <div className="relative z-10 min-h-screen w-full overflow-x-hidden px-4 pt-28 pb-10 md:px-8 md:pt-32 md:pb-12">
         <div className="mx-auto w-full max-w-5xl">
 
-          <div className="flex flex-col md:flex-row gap-8">
+          <div className="flex flex-col md:flex-row gap-8 animate-slide-up">
             {/* Left Sidebar - Profile Overview */}
             <div className="w-full md:w-1/3 flex flex-col gap-6">
               

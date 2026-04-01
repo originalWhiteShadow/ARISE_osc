@@ -89,9 +89,20 @@ export default function Home() {
                 </span>
               </span>
             </h1>
-          </div>
+            
+            {/* Context & Status Badges */}
+            <div className="flex flex-col items-center justify-center gap-5 pt-4 animate-fade-in animation-delay-700 pointer-events-auto">
+              <p className="text-white/60 font-medium tracking-widest text-sm sm:text-base flex items-center gap-2 drop-shadow-md">
+                <IoPlanetOutline className="text-[--color-brand-cyan] text-lg" />
+                LOCATION: UDUPI (SMVITM)
+              </p>
 
-          {/* Removed CTA Buttons per user request */}
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass border border-red-500/30 bg-red-500/10 shadow-[0_0_15px_rgba(239,68,68,0.2)]">
+                <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse shadow-[0_0_5px_#ef4444]" />
+                <span className="text-xs font-bold text-red-400 uppercase tracking-widest mt-0.5">Live</span>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
