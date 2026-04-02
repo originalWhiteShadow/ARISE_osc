@@ -2,29 +2,91 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { 
-  IoArrowForwardOutline,
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import {
   IoFlash,
   IoCodeWorkingOutline,
-  IoCheckmarkCircle,
-  IoInfinite,
   IoPlanetOutline,
   IoSparkles,
   IoRocketOutline,
   IoPeopleOutline
 } from "react-icons/io5";
 
+// Interactive 3D Card Component
+function InteractiveCard({ item, idx }: { item: any; idx: number }) {
+  const Icon = item.icon;
+  const x = useMotionValue(0.5);
+  const y = useMotionValue(0.5);
+  
+  const springConfig = { damping: 20, stiffness: 300 };
+  const mouseXSpring = useSpring(x, springConfig);
+  const mouseYSpring = useSpring(y, springConfig);
+
+  const rotateX = useTransform(mouseYSpring, [0, 1], ["15deg", "-15deg"]);
+  const rotateY = useTransform(mouseXSpring, [0, 1], ["-15deg", "15deg"]);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    x.set(mouseX / width);
+    y.set(mouseY / height);
+  };
+  
+  const handleMouseLeave = () => {
+    x.set(0.5);
+    y.set(0.5);
+  };
+
+  return (
+    <motion.div
+      key={idx}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        rotateX,
+        rotateY,
+        transformStyle: "preserve-3d",
+      }}
+      className="relative glass w-[280px] sm:w-[320px] md:w-[380px] p-5 sm:p-6 rounded-2xl border border-white/5 hover:border-white/20 transition-colors duration-500 shrink-0 flex flex-col cursor-grab active:cursor-grabbing group shadow-[0_4px_20px_rgba(0,0,0,0.3)] hover:shadow-[0_10px_40px_rgba(26,229,229,0.15)]"
+    >
+      <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-2xl pointer-events-none" />
+      
+      <div className="flex items-center gap-4 mb-4 relative z-10 pointer-events-none" style={{ transform: "translateZ(40px)" }}>
+        <div className="w-12 h-12 rounded-xl bg-black/40 border border-white/10 flex items-center justify-center transition-transform duration-500 shrink-0 shadow-inner group-hover:bg-white/5">
+          <Icon className={`text-2xl ${item.color}`} />
+        </div>
+        <h3 className="text-lg font-bold text-white leading-tight tracking-tight whitespace-normal break-words drop-shadow-md">
+          {item.title}
+        </h3>
+      </div>
+      <p 
+        className="text-sm text-white/60 leading-relaxed font-light whitespace-normal break-words relative z-10 pointer-events-none"
+        style={{ transform: "translateZ(20px)" }}
+      >
+        {item.text}
+      </p>
+    </motion.div>
+  );
+}
+
 export default function Home() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
 
   useEffect(() => {
     let animationFrameId: number;
 
     const scroll = () => {
-      if (!isHovered && scrollRef.current) {
-        scrollRef.current.scrollLeft += 1.5; // Auto-scroll speed
-        
+      if (!isHovered && !isDragging && scrollRef.current) {
+        scrollRef.current.scrollLeft += 1.0; // Auto-scroll speed
+
         // Endless loop jump
         if (scrollRef.current.scrollLeft >= scrollRef.current.scrollWidth / 2) {
           scrollRef.current.scrollLeft = 0;
@@ -35,7 +97,32 @@ export default function Home() {
 
     animationFrameId = requestAnimationFrame(scroll);
     return () => cancelAnimationFrame(animationFrameId);
-  }, [isHovered]);
+  }, [isHovered, isDragging]);
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    setIsDragging(true);
+    setStartX(e.pageX - (scrollRef.current?.offsetLeft || 0));
+    setScrollLeft(scrollRef.current?.scrollLeft || 0);
+  };
+
+  const handleMouseLeaveArea = () => {
+    setIsHovered(false);
+    setIsDragging(false);
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleDragMove = (e: React.MouseEvent) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    const x = e.pageX - (scrollRef.current?.offsetLeft || 0);
+    const walk = (x - startX) * 2; // scroll speed multiplier
+    if (scrollRef.current) {
+      scrollRef.current.scrollLeft = scrollLeft - walk;
+    }
+  };
 
   const highlights = [
     { title: "Project: NeuralWeave", text: "A decentralized learning platform built in 48 hours by a swarm of 50 developers.", icon: IoCodeWorkingOutline, color: "text-[--color-brand-cyan]" },
@@ -89,7 +176,7 @@ export default function Home() {
                 </span>
               </span>
             </h1>
-            
+
             {/* Context & Status Badges */}
             <div className="flex flex-col items-center justify-center gap-5 pt-4 animate-fade-in animation-delay-700 pointer-events-auto">
               <p className="text-white/60 font-medium tracking-widest text-sm sm:text-base flex items-center gap-2 drop-shadow-md">
@@ -119,53 +206,34 @@ export default function Home() {
 
         {/* Marquee Track Container */}
         <div className="relative w-full flex flex-col group py-4 pointer-events-auto animate-fade-in animation-delay-1200">
-          
+
           {/* Subtle gradient edges to fade out the marquee (Shrunk on mobile) */}
           <div className="absolute inset-y-0 left-0 w-8 md:w-24 lg:w-40 bg-gradient-to-r from-black via-black/80 to-transparent z-20 pointer-events-none" />
           <div className="absolute inset-y-0 right-0 w-8 md:w-24 lg:w-40 bg-gradient-to-l from-black via-black/80 to-transparent z-20 pointer-events-none" />
 
-          {/* Native scrollable container with JS assisting the infinite auto-pan */}
-          <div 
+          {/* Native scrollable container with JS assisting the infinite auto-pan and cursor dragging */}
+          <div
             ref={scrollRef}
-            className="flex overflow-x-auto whitespace-nowrap gap-6 w-full py-2 px-8 touch-pan-x"
+            className={`flex overflow-x-auto whitespace-nowrap gap-6 w-full py-12 px-8 touch-pan-x select-none perspective-[1000px] ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
+            onMouseLeave={handleMouseLeaveArea}
+            onMouseDown={handleMouseDown}
+            onMouseUp={handleMouseUp}
+            onMouseMove={handleDragMove}
             onTouchStart={() => setIsHovered(true)}
             onTouchEnd={() => setIsHovered(false)}
           >
-            
-            {/* Render two identical sets of cards for seamless looping */}
-            {[...highlights, ...highlights].map((item, idx) => {
-              const Icon = item.icon;
-              return (
-                <div 
-                  key={idx} 
-                  className="relative glass w-[280px] sm:w-[320px] md:w-[380px] p-5 sm:p-6 rounded-2xl border border-white/5 hover:border-white/20 transition-all duration-500 shrink-0 flex flex-col cursor-pointer hover:-translate-y-2 hover:shadow-[0_10px_40px_rgba(26,229,229,0.1)]"
-                >
-                  <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-2xl" />
 
-                  <div className="flex items-center gap-4 mb-4 relative z-10">
-                    <div className="w-12 h-12 rounded-xl bg-black/40 border border-white/10 flex items-center justify-center transition-transform duration-500 shrink-0 shadow-inner">
-                      <Icon className={`text-2xl ${item.color}`} />
-                    </div>
-                    <h3 className="text-lg font-bold text-white leading-tight tracking-tight whitespace-normal break-words">
-                      {item.title}
-                    </h3>
-                  </div>
-                  <p className="text-sm text-white/60 leading-relaxed font-light whitespace-normal break-words relative z-10">
-                    {item.text}
-                  </p>
-                </div>
-              );
-            })}
-            
+            {/* Render two identical sets of cards for seamless looping */}
+            {[...highlights, ...highlights].map((item, idx) => (
+              <InteractiveCard key={idx} item={item} idx={idx} />
+            ))}
+
           </div>
         </div>
       </section>
-      
+
       {/* Spacer to allow scrolling past marquee smoothly */}
       <div className="h-40" />
     </main>
