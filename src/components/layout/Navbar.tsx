@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Flashlight } from 'lucide-react';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -36,6 +36,13 @@ export default function Navbar() {
           </nav>
           
           <div className="hidden md:flex items-center gap-4">
+            <button 
+              onClick={() => window.dispatchEvent(new Event('toggle-torch'))}
+              className="p-2 text-apple-text hover:bg-apple-border/20 rounded-md transition-colors"
+              title="Toggle Torch Mode"
+            >
+              <Flashlight className="w-4 h-4" />
+            </button>
             <ThemeToggle />
             <Link 
               href="?login=true" 
@@ -47,6 +54,12 @@ export default function Navbar() {
 
           {/* Mobile Menu Button */}
           <div className="flex md:hidden items-center gap-2 z-50">
+            <button 
+              onClick={() => window.dispatchEvent(new Event('toggle-torch'))}
+              className="p-2 text-apple-text hover:bg-apple-border/20 rounded-md transition-colors"
+            >
+              <Flashlight className="w-4 h-4" />
+            </button>
             <ThemeToggle />
             <button 
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}

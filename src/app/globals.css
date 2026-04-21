@@ -7,7 +7,7 @@
   --color-apple-text: var(--text);
   --color-apple-text-muted: var(--text-muted);
   --color-apple-border: var(--border);
-  --color-apple-accent: #0066cc; /* Apple blue */
+  --color-apple-accent: #ff2a5f; /* Neon Rose - Uncommon Accent */
   --color-apple-nav: var(--nav-bg);
 
   --font-sans: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -16,7 +16,7 @@
 
 :root {
   /* LIGHT MODE */
-  --bg: #f9f9fb;
+  --bg: #e5e5ea;
   --text: #1d1d1f;
   --text-muted: #86868b;
   --border: #d2d2d7;

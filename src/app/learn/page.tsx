@@ -9,11 +9,11 @@ export default function LearnPage() {
         Dummy Data: Curated learning resources from external APIs will be rendered here natively in Phase 2.
       </p>
       
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 w-full max-w-5xl mb-12">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 w-full max-w-5xl mb-12 relative z-10">
         {['AI & ML', 'Web Dev', 'Systems', 'Open Source'].map((cat, idx) => (
-          <div key={idx} className="aspect-square p-6 border border-apple-border rounded-2xl bg-apple-border/10 flex flex-col items-center justify-center text-center hover:scale-105 transition-transform cursor-pointer">
+          <div key={idx} className="apple-card glass-heavy aspect-square p-6 flex flex-col items-center justify-center text-center transition-all duration-500 transform-gpu hover:-translate-y-2 hover:scale-105 hover:shadow-2xl cursor-pointer">
              <h3 className="text-xl font-semibold">{cat}</h3>
-             <span className="text-apple-text-muted text-sm mt-2">View Path</span>
+             <span className="text-apple-accent text-sm mt-2 font-medium">View Path</span>
           </div>
         ))}
       </div>

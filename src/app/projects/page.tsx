@@ -9,15 +9,15 @@ export default function ProjectsPage() {
         Dummy Data: This section will dynamically fetch active open-source projects from the database in Phase 2.
       </p>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-5xl mb-12">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-5xl mb-12 relative z-10">
         {/* Dummy Project Cards */}
         {[1, 2, 3].map((item) => (
-          <div key={item} className="p-8 border border-apple-border rounded-2xl bg-apple-border/10 flex flex-col items-start transition-colors duration-300">
+          <div key={item} className="apple-card glass-heavy p-8 flex flex-col items-start transition-all duration-500 transform-gpu hover:-translate-y-2 hover:shadow-2xl">
             <h2 className="text-2xl font-semibold mb-2">Project Beta-{item}</h2>
             <p className="text-apple-text-muted text-sm mb-6 flex-grow">
               A placeholder description showing where open-source issues and tasks will be mapped out.
             </p>
-            <button className="px-4 py-2 bg-apple-text text-apple-bg rounded-full text-sm font-medium">
+            <button className="px-5 py-2.5 bg-apple-text text-apple-bg rounded-full text-sm font-medium hover:opacity-80 transition-opacity">
               View Tasks
             </button>
           </div>

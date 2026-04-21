@@ -1,8 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
-import { MorphGear } from "@/components/ui/MorphGear";
+import { ArrowRight, LayoutDashboard, Terminal, CheckCircle2, CircleDashed } from "lucide-react";
 import { motion, useScroll, useTransform } from "framer-motion";
 
 export default function Home() {
@@ -17,34 +16,8 @@ export default function Home() {
   const boxMorphRadius = useTransform(scrollYProgress, [0.2, 0.8], ["12px", "150px"]);
   const boxRotate = useTransform(scrollYProgress, [0.2, 0.8], [0, 15]);
 
-  // Foreground floating geometry
-  const fgRotate1 = useTransform(scrollYProgress, [0, 1], [-45, 180]);
-  const fgY1 = useTransform(scrollYProgress, [0, 1], [0, -600]);
-  
-  const fgRotate2 = useTransform(scrollYProgress, [0, 1], [45, -90]);
-  const fgY2 = useTransform(scrollYProgress, [0, 1], [0, -400]);
-
   return (
     <div className="flex flex-col items-center w-full pb-24 transition-colors duration-300 relative overflow-hidden">
-      <MorphGear />
-
-      {/* Extreme Center ARISE_osc Text */}
-      <div className="fixed inset-0 flex items-center justify-center pointer-events-none -z-20">
-        <h1 className="text-[15vw] font-bold text-apple-text/15 dark:text-apple-text/5 select-none tracking-tighter mix-blend-multiply dark:mix-blend-overlay">
-          ARISE_osc
-        </h1>
-      </div>
-
-      {/* Foreground Geometric Elements */}
-      <motion.div 
-        style={{ rotate: fgRotate1, y: fgY1 }}
-        className="absolute top-[60vh] right-[10vw] w-12 h-12 border-2 border-apple-accent z-40 pointer-events-none backdrop-blur-md bg-apple-bg/10"
-      />
-      <motion.div 
-        style={{ rotate: fgRotate2, y: fgY2 }}
-        className="absolute top-[90vh] left-[8vw] w-20 h-20 border border-apple-text/30 rounded-xl z-40 pointer-events-none backdrop-blur-sm shadow-xl"
-      />
-
       {/* Hero Section */}
       <motion.section 
         style={{ y: heroY, opacity: heroOpacity }}
@@ -84,14 +57,78 @@ export default function Home() {
            {/* Abstract "Clean App Graphic" morphing */}
            <motion.div 
              style={{ borderRadius: boxMorphRadius, rotate: boxRotate }}
-             className="w-3/4 h-3/4 border border-apple-border/50 bg-apple-bg shadow-2xl flex items-center justify-center translate-y-12 transition-all duration-300 ease-linear"
+             className="w-[90%] h-[90%] border border-apple-border/50 bg-apple-bg shadow-2xl flex flex-col translate-y-12 transition-all duration-300 ease-linear overflow-hidden relative"
            >
-              <span className="text-apple-text-muted text-sm font-medium">Community Dashboard Preview</span>
-              <div className="absolute top-4 left-4 flex gap-2">
-                 <div className="w-3 h-3 rounded-full bg-apple-border/40"></div>
-                 <div className="w-3 h-3 rounded-full bg-apple-border/40"></div>
-                 <div className="w-3 h-3 rounded-full bg-apple-border/40"></div>
+              {/* Fake Window Header */}
+              <div className="w-full h-12 border-b border-apple-border/30 flex items-center px-4 shrink-0 bg-apple-bg/50 backdrop-blur-md z-10 transition-colors">
+                 <div className="flex gap-2">
+                    <div className="w-3 h-3 rounded-full bg-apple-border hover:bg-red-400 transition-colors"></div>
+                    <div className="w-3 h-3 rounded-full bg-apple-border hover:bg-yellow-400 transition-colors"></div>
+                    <div className="w-3 h-3 rounded-full bg-apple-border hover:bg-green-400 transition-colors"></div>
+                 </div>
+                 <div className="mx-auto w-1/3 h-6 rounded-md bg-apple-border/10 flex items-center px-3 border border-apple-border/20">
+                   <div className="w-3 h-3 rounded-full bg-apple-text-muted/40 mr-2" />
+                   <div className="w-16 h-1.5 rounded-full bg-apple-text-muted/30" />
+                 </div>
               </div>
+
+              {/* Dashboard Body */}
+              <div className="flex-1 w-full flex bg-apple-border/5">
+                {/* Sidebar */}
+                <div className="w-16 md:w-56 h-full border-r border-apple-border/30 p-4 flex flex-col gap-4">
+                  <div className="w-full h-9 rounded-md bg-apple-accent/10 flex items-center px-3 text-apple-accent gap-3">
+                    <LayoutDashboard className="w-4 h-4 shrink-0" />
+                    <div className="hidden md:block w-20 h-2 rounded-full bg-apple-accent/50" />
+                  </div>
+                  <div className="w-full h-9 rounded-md hover:bg-apple-border/15 flex items-center px-3 text-apple-text-muted gap-3 transition-colors">
+                    <Terminal className="w-4 h-4 shrink-0" />
+                    <div className="hidden md:block w-24 h-2 rounded-full bg-apple-text-muted/40" />
+                  </div>
+                  <div className="w-full h-3 border-b border-apple-border/30 my-2" />
+                  <div className="w-full h-9 rounded-md hover:bg-apple-border/15 flex items-center px-3 text-apple-text-muted gap-3 transition-colors">
+                    <div className="w-4 h-4 rounded-full border-2 border-apple-text-muted/50 shrink-0" />
+                    <div className="hidden md:block w-16 h-2 rounded-full bg-apple-text-muted/40" />
+                  </div>
+                </div>
+
+                {/* Main Content Pane */}
+                <div className="flex-1 p-6 md:p-8 flex flex-col gap-6 overflow-hidden">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <div className="w-32 md:w-48 h-5 rounded-full bg-apple-text/80 mb-3" />
+                      <div className="w-48 md:w-64 h-2.5 rounded-full bg-apple-text-muted/40" />
+                    </div>
+                    <div className="w-10 h-10 rounded-full border border-apple-border/50 bg-apple-bg flex items-center justify-center">
+                       <div className="w-6 h-6 rounded-full bg-apple-border/50" />
+                    </div>
+                  </div>
+
+                  {/* Stats Row */}
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="h-28 rounded-xl border border-apple-border/30 bg-apple-bg p-5 flex flex-col justify-between shadow-sm">
+                      <div className="w-20 h-2.5 rounded-full bg-apple-text-muted/50" />
+                      <div className="w-16 h-8 rounded-full bg-apple-text/90" />
+                    </div>
+                    <div className="h-28 rounded-xl border border-apple-border/30 bg-apple-bg p-5 flex flex-col justify-between shadow-sm">
+                      <div className="w-24 h-2.5 rounded-full bg-apple-text-muted/50" />
+                      <div className="w-10 h-8 rounded-full bg-apple-accent" />
+                    </div>
+                  </div>
+
+                  {/* Tasks List */}
+                  <div className="flex-1 rounded-xl border border-apple-border/30 bg-apple-bg p-5 flex flex-col gap-3 shadow-sm overflow-hidden">
+                    <div className="w-24 h-2.5 rounded-full bg-apple-text-muted/50 mb-3" />
+                    {[1, 2, 3].map((i) => (
+                      <div key={i} className="w-full h-12 rounded-lg bg-apple-border/5 flex items-center px-4 gap-4 hover:bg-apple-border/10 transition-colors">
+                         {i === 1 ? <CheckCircle2 className="w-5 h-5 text-green-500/70 shrink-0" /> : <CircleDashed className="w-5 h-5 text-apple-text-muted/50 shrink-0" />}
+                         <div className="flex-1 h-2.5 rounded-full bg-apple-text-muted/30" />
+                         <div className="hidden md:block w-16 h-2.5 rounded-full bg-apple-border/60" />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
            </motion.div>
         </motion.div>
       </section>

@@ -9,10 +9,10 @@ export default function BlogsPage() {
         Dummy Data: A placeholder for the Transmission Logs. This will display community updates, tech blogs, and announcements in Phase 2.
       </p>
       
-      <div className="w-full max-w-4xl space-y-4 mb-12">
+      <div className="w-full max-w-4xl space-y-4 mb-12 relative z-10">
         {[1, 2].map((item) => (
-          <div key={item} className="p-6 border border-apple-border rounded-xl bg-apple-border/5 flex flex-col md:flex-row gap-6 items-start md:items-center cursor-pointer hover:bg-apple-border/10 transition-colors">
-             <div className="w-full md:w-48 h-32 bg-apple-border/20 rounded-lg flex-shrink-0"></div>
+          <div key={item} className="apple-card glass-heavy p-6 flex flex-col md:flex-row gap-6 items-start md:items-center cursor-pointer transition-all duration-500 transform-gpu hover:-translate-x-2 hover:shadow-xl">
+             <div className="w-full md:w-48 h-32 bg-apple-bg/50 border border-apple-border/30 rounded-lg flex-shrink-0 backdrop-blur-sm"></div>
              <div>
                <span className="text-apple-accent text-sm font-medium mb-2 block">Tech Blog</span>
                <h2 className="text-2xl font-semibold mb-2">Platform Announcement {item}</h2>

@@ -4,6 +4,7 @@ import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
+import Image from "next/image";
 
 export function SignInModal() {
   const router = useRouter();
@@ -45,7 +46,14 @@ export function SignInModal() {
                <X className="w-4 h-4" />
              </button>
              
-             <div className="w-10 h-10 bg-apple-text rounded-sm rotate-12 mb-6" />
+             <div className="relative w-14 h-14 mb-6 flex items-center justify-center">
+               <Image 
+                 src="/logo.png" 
+                 alt="ARISE Logo"
+                 fill
+                 className="object-contain invert dark:invert-0"
+               />
+             </div>
              <h2 className="text-2xl font-bold mb-2">Sign In to ARISE</h2>
              <p className="text-apple-text-muted text-sm mb-8">
                Seamless authentication to access dashboards, tasks, and contributions.

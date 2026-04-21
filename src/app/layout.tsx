@@ -6,6 +6,7 @@ import Footer from "@/components/layout/Footer";
 import { Providers } from "@/components/providers";
 import { SignInModal } from "@/components/ui/SignInModal";
 import { GlobalHUD } from "@/components/ui/GlobalHUD";
+import { GlobalDecorations } from "@/components/ui/GlobalDecorations";
 import { Suspense } from "react";
 
 const geistSans = Geist({
@@ -37,6 +38,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col pt-14">
         <Providers attribute="class" defaultTheme="light" enableSystem={false}>
           <Navbar />
+          <GlobalDecorations />
           <main className="flex-grow">
             {children}
           </main>

@@ -9,7 +9,7 @@ export default function AboutPage() {
          <p className="text-xl text-apple-text-muted mb-8">
            Dummy Data: You are viewing a placeholder "About Us" page. In Phase 2, this will contain the community mission, vision, and the core story.
          </p>
-         <div className="p-8 border border-apple-border rounded-xl bg-apple-border/5 mb-8">
+         <div className="apple-card glass-heavy p-8 mb-8 transition-all duration-500 transform-gpu hover:-translate-y-2 hover:shadow-2xl">
             <h3 className="text-2xl font-bold mb-3">Our Mission</h3>
             <p className="text-apple-text-muted">To foster structured collaboration and scale open-source ecosystems using lightweight, performant modern technologies.</p>
          </div>

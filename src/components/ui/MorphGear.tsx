@@ -40,23 +40,6 @@ export function MorphGear() {
         }}
       />
 
-      {/* Central Abstract Complex Geometry */}
-      <motion.div
-        style={{
-          rotate: r1,
-          borderRadius: borderRadiusMorph,
-          y: y1,
-        }}
-        className="absolute w-[80vw] h-[80vw] md:w-[60vw] md:h-[60vw] border-[1.5px] border-apple-accent/50 dark:border-apple-accent/30 border-dashed opacity-60 dark:opacity-40 mix-blend-multiply dark:mix-blend-screen"
-      />
-      <motion.div
-        style={{
-          rotate: r4,
-          scale: scaleMorph,
-        }}
-        className="absolute w-[60vw] h-[60vw] md:w-[45vw] md:h-[45vw] border-[2px] border-apple-text/15 dark:border-apple-text/10"
-      />
-
       {/* Engineering Accent - Cpu / Circuit */}
       <motion.div
         style={{ rotate: r2, y: y2 }}
@@ -65,6 +48,19 @@ export function MorphGear() {
         <Settings className="w-full h-full" strokeWidth={0.5} />
         <div className="absolute w-px h-[200vh] bg-apple-border/20 left-1/2 -translate-x-1/2" />
         <div className="absolute h-px w-[200vw] bg-apple-border/20 top-1/2 -translate-y-1/2" />
+      </motion.div>
+
+      {/* Engineering Coil Layer */}
+      <motion.div
+        style={{ y: y1 }}
+        className="absolute left-[20%] top-[0%] w-24 md:w-32 h-[120vh] opacity-20 dark:opacity-[0.15] text-apple-accent overflow-hidden"
+      >
+        <svg viewBox="0 0 100 800" preserveAspectRatio="none" className="w-full h-full stroke-current fill-none">
+          {/* Back loops off coil (dashed for depth) */}
+          <path d="M 50,0 Q 80,50 50,100 T 50,200 T 50,300 T 50,400 T 50,500 T 50,600 T 50,700 T 50,800" strokeWidth="1" strokeDasharray="4 4" opacity="0.3"/>
+          {/* Front loops (solid) */}
+          <path d="M 50,0 Q 100,50 50,100 Q 0,150 50,200 Q 100,250 50,300 Q 0,350 50,400 Q 100,450 50,500 Q 0,550 50,600 Q 100,650 50,700 Q 0,750 50,800" strokeWidth="1.5" />
+        </svg>
       </motion.div>
 
       {/* Engineering Accent - Database / Git Merge */}
