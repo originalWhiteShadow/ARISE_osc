@@ -1,0 +1,204 @@
+ARISE Open Source Community Website – Full Specification
+1. Project Overview
+
+Name: ARISE
+Type: Open Source Community Platform
+Reference: https://sosc.org.in/
+
+Goal:
+A modern, minimal, anime-inspired open-source community website with interactive UI, structured collaboration tools, and scalable backend.
+
+2. Design Philosophy
+Visual Direction
+Clean, minimal, timeless UI
+Subtle anime-inspired aesthetic (not flashy, more atmospheric)
+Soft gradients + neutral palette (white/black/gray + accent color)
+Use engineering motifs:
+gears
+circuits
+mechanical motion
+Animation Style
+Lightweight (NO heavy Three.js unless optimized)
+Smooth morphing transitions
+Scroll-based animations:
+components react to scroll (parallax + gravity illusion)
+Mouse interaction:
+hover → subtle physics response
+cursor proximity → elements shift slightly
+Avoid clutter
+3. Core Features
+3.1 Authentication System
+Features:
+User Login / Signup
+Unique User ID per user
+QR Code generation for each user profile
+Secure authentication (JWT / OAuth optional)
+Data Stored:
+User ID
+Name
+Email
+Role
+Activity stats
+Contributions
+3.2 Role-Based Access Control (RBAC)
+Default Roles (Extendable):
+Super Admin
+Admin
+Maintainer
+Contributor
+Viewer
+Requirements:
+Roles must be dynamically extendable
+Permission mapping system (not hardcoded)
+3.3 Projects Section
+Features:
+List of open-source projects
+Each project includes:
+Description
+Maintainers
+Tasks/issues
+Contributors
+Task Management:
+Assign tasks to users
+Task status:
+Open
+In Progress
+Completed
+Contribution tracking
+3.4 Blog / News Section
+Features:
+Create, edit, delete blog posts
+Editing restricted by email whitelist
+Rich text editor
+Content:
+Community updates
+Tech blogs
+Announcements
+3.5 Learn Page
+Features:
+Curated learning resources
+Content sourced from:
+GeeksforGeeks (GFG scraping/API if allowed)
+Categories:
+AI/ML
+Web Dev
+Systems
+Open Source
+Notes:
+Cache external data
+Avoid direct heavy scraping on runtime
+3.6 Admin Dashboard
+Features:
+User management
+Role assignment
+Content moderation
+Project/task overview
+Analytics
+3.7 User Dashboard
+Features:
+Profile with QR code
+Contribution stats
+Assigned tasks
+Activity timeline
+3.8 Homepage
+Sections:
+Hero Section
+Minimal intro
+Smooth animated elements
+Floating mechanical components
+Scroll Sections
+Projects preview
+Latest blogs (poster style floating cards)
+Learn highlights
+Interaction:
+Components react to:
+scroll velocity
+mouse movement
+Footer:
+Community socials
+Contact links
+3.9 About Page
+Community mission
+Vision
+Story
+3.10 Team Page
+Founder details
+Core members
+Contributors
+3.11 Sponsors Page
+Sponsor logos
+Sponsorship tiers
+CTA for sponsorship
+4. UI Interaction System
+Requirements:
+Mouse interaction:
+elements slightly follow cursor
+Gravity-like behavior:
+components shift on scroll
+Lightweight physics:
+use GSAP / Framer Motion
+avoid heavy physics engines
+5. Tech Stack
+Frontend:
+React / Next.js
+Tailwind CSS
+Framer Motion / GSAP
+Backend:
+Node.js (Express / NestJS)
+REST API or GraphQL
+Database:
+PostgreSQL / MongoDB
+Authentication:
+JWT-based auth
+OAuth optional (Google/GitHub)
+Storage:
+Cloud (AWS S3 / Firebase)
+6. Database Design (High Level)
+Users Table
+id
+name
+email
+role
+qr_code
+stats
+Projects Table
+id
+title
+description
+maintainers
+Tasks Table
+id
+project_id
+assigned_user
+status
+Blogs Table
+id
+title
+content
+author_email
+7. Performance Constraints
+Must be lightweight
+Fast initial load (<2s target)
+Lazy loading for heavy sections
+Optimize animations for 60 FPS
+8. Security Requirements
+Role-based access validation
+Secure APIs
+Input sanitization
+Rate limiting
+9. Deployment
+Frontend: Vercel / Netlify
+Backend: AWS / Railway / Render
+DB: Managed cloud DB
+10. Future Scope
+GitHub integration
+Real-time collaboration
+Leaderboard system
+AI-powered recommendations
+Internal messaging system
+11. Deliverables Expected
+Fully functional website
+Clean UI with animations
+Admin + user dashboards
+Scalable backend
+Deployment-ready system
