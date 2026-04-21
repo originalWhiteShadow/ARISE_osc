@@ -1,0 +1,97 @@
+"use client";
+
+import Link from 'next/link';
+import Image from 'next/image';
+import { Menu, X } from 'lucide-react';
+import { ThemeToggle } from '@/components/ui/ThemeToggle';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+
+export default function Navbar() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  return (
+    <>
+      <header className="fixed top-0 left-0 right-0 z-[70] apple-nav-glass border-b border-apple-border/30 h-14 flex items-center">
+        <div className="w-full max-w-7xl mx-auto px-4 md:px-8 flex items-center justify-between">
+          <Link href="/" className="font-semibold text-lg tracking-tight text-apple-text flex items-center gap-2 z-50">
+            {/* Custom ARISE Logo Image */}
+            <div className="relative w-7 h-7 flex items-center justify-center">
+              <Image 
+                src="/logo.png" 
+                alt="ARISE Logo"
+                fill
+                className="object-contain invert dark:invert-0"
+              />
+            </div>
+            <span className="font-mono tracking-[0.1em] uppercase text-sm">ARISE</span>
+          </Link>
+
+          {/* Desktop Nav */}
+          <nav className="hidden md:flex flex-1 justify-center items-center gap-8 text-[13px] font-mono uppercase tracking-wider text-apple-text-muted">
+            <Link href="/projects" className="hover:text-apple-text hover:-translate-y-0.5 transition-all">Projects</Link>
+            <Link href="/blogs" className="hover:text-apple-text hover:-translate-y-0.5 transition-all">Newsroom</Link>
+            <Link href="/learn" className="hover:text-apple-text hover:-translate-y-0.5 transition-all">Knowledge</Link>
+            <Link href="/about" className="hover:text-apple-text hover:-translate-y-0.5 transition-all">Sys_About</Link>
+          </nav>
+          
+          <div className="hidden md:flex items-center gap-4">
+            <ThemeToggle />
+            <Link 
+              href="?login=true" 
+              className="px-4 py-1.5 text-[12px] font-mono uppercase tracking-widest rounded-none border border-apple-text text-apple-text hover:bg-apple-text hover:text-apple-bg transition-colors"
+            >
+              Init_Session
+            </Link>
+          </div>
+
+          {/* Mobile Menu Button */}
+          <div className="flex md:hidden items-center gap-2 z-50">
+            <ThemeToggle />
+            <button 
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-2 text-apple-text flex flex-col justify-center items-center w-8 h-8 relative"
+            >
+              <div className={`w-5 h-0.5 bg-current transition-all absolute ${mobileMenuOpen ? 'rotate-45' : '-translate-y-1.5'}`} />
+              <div className={`w-5 h-0.5 bg-current transition-all absolute ${mobileMenuOpen ? 'opacity-0' : 'opacity-100'}`} />
+              <div className={`w-5 h-0.5 bg-current transition-all absolute ${mobileMenuOpen ? '-rotate-45' : 'translate-y-1.5'}`} />
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="fixed inset-0 z-[60] bg-apple-bg/95 backdrop-blur-xl flex flex-col items-center justify-center pt-20"
+          >
+            <nav className="flex flex-col items-center gap-8 text-xl font-mono uppercase tracking-[0.2em] text-apple-text">
+              <Link href="/projects" onClick={() => setMobileMenuOpen(false)} className="hover:text-apple-accent transition-colors">Projects_DB</Link>
+              <Link href="/blogs" onClick={() => setMobileMenuOpen(false)} className="hover:text-apple-accent transition-colors">Transmission_Log</Link>
+              <Link href="/learn" onClick={() => setMobileMenuOpen(false)} className="hover:text-apple-accent transition-colors">Neural_Net</Link>
+              <Link href="/about" onClick={() => setMobileMenuOpen(false)} className="hover:text-apple-accent transition-colors">Core_Sys</Link>
+              
+              <div className="mt-8 pt-8 border-t border-apple-border/50 flex w-48 justify-center">
+                <Link 
+                  href="?login=true" 
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="px-6 py-3 border border-apple-text hover:bg-apple-text hover:text-apple-bg transition-colors"
+                >
+                  Init_Auth
+                </Link>
+              </div>
+            </nav>
+            {/* Background wireframe for mobile menu */}
+            <div className="absolute inset-0 pointer-events-none -z-10 opacity-10" style={{
+              backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 40px, var(--border) 40px, var(--border) 41px), repeating-linear-gradient(90deg, transparent, transparent 40px, var(--border) 40px, var(--border) 41px)'
+            }} />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+}
