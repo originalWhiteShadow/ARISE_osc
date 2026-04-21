@@ -2,13 +2,17 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { Menu, X, Flashlight } from 'lucide-react';
+import { Menu, X, Flashlight, User } from 'lucide-react';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useAuth } from '@/components/providers/AuthProvider';
+import { signOut } from 'firebase/auth';
+import { auth } from '@/lib/firebase/config';
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { user, loading } = useAuth();
 
   return (
     <>
@@ -44,12 +48,35 @@ export default function Navbar() {
               <Flashlight className="w-4 h-4" />
             </button>
             <ThemeToggle />
-            <Link 
-              href="?login=true" 
-              className="px-4 py-1.5 text-[12px] font-mono uppercase tracking-widest rounded-none border border-apple-text text-apple-text hover:bg-apple-text hover:text-apple-bg transition-colors"
-            >
-              Init_Session
-            </Link>
+            {!loading && user ? (
+              <div className="flex items-center gap-4">
+                <Link href="/profile" className="flex items-center gap-2 group relative" title="Access System Profile">
+                  {user.email === "whiteshadowpoorna@gmail.com" && (
+                    <div className="absolute top-0 right-0 w-2.5 h-2.5 bg-red-500 rounded-full border border-apple-bg z-10 animate-pulse" />
+                  )}
+                  <div className="w-8 h-8 rounded-full border border-apple-border group-hover:border-apple-accent overflow-hidden flex items-center justify-center bg-apple-border/20 transition-colors">
+                    {user.photoURL ? (
+                      <img src={user.photoURL} alt="Profile" className="w-full h-full object-cover" />
+                    ) : (
+                      <User className="w-4 h-4 text-apple-text-muted group-hover:text-apple-accent transition-colors" />
+                    )}
+                  </div>
+                </Link>
+                <button 
+                  onClick={() => signOut(auth)}
+                  className="px-4 py-1.5 text-[12px] font-mono uppercase tracking-widest rounded-none border border-apple-text text-apple-text hover:bg-apple-text hover:text-apple-bg transition-colors"
+                >
+                  End_Sys
+                </button>
+              </div>
+            ) : (
+              <Link 
+                href="?login=true" 
+                className="px-4 py-1.5 text-[12px] font-mono uppercase tracking-widest rounded-none border border-apple-text text-apple-text hover:bg-apple-text hover:text-apple-bg transition-colors"
+              >
+                Init_Session
+              </Link>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -89,13 +116,22 @@ export default function Navbar() {
               <Link href="/about" onClick={() => setMobileMenuOpen(false)} className="hover:text-apple-accent transition-colors">Core_Sys</Link>
               
               <div className="mt-8 pt-8 border-t border-apple-border/50 flex w-48 justify-center">
-                <Link 
-                  href="?login=true" 
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="px-6 py-3 border border-apple-text hover:bg-apple-text hover:text-apple-bg transition-colors"
-                >
-                  Init_Auth
-                </Link>
+                {!loading && user ? (
+                  <button 
+                    onClick={() => { signOut(auth); setMobileMenuOpen(false); }}
+                    className="px-6 py-3 border border-apple-text hover:bg-apple-text hover:text-apple-bg transition-colors"
+                  >
+                    End_Sys
+                  </button>
+                ) : (
+                  <Link 
+                    href="?login=true" 
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="px-6 py-3 border border-apple-text hover:bg-apple-text hover:text-apple-bg transition-colors"
+                  >
+                    Init_Auth
+                  </Link>
+                )}
               </div>
             </nav>
             {/* Background wireframe for mobile menu */}

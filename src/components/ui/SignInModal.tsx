@@ -2,6 +2,10 @@
 
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { signInWithPopup } from "firebase/auth";
+import { auth, googleProvider, githubProvider } from "@/lib/firebase/config";
+import { useAuth } from "@/components/providers/AuthProvider";
+import { syncUserProfile } from "@/lib/firebase/firestore";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import Image from "next/image";
@@ -11,14 +15,47 @@ export function SignInModal() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [isOpen, setIsOpen] = useState(false);
+  const { user } = useAuth();
 
   useEffect(() => {
     setIsOpen(searchParams.get("login") === "true");
   }, [searchParams]);
 
   const close = () => {
-    // Determine the current path without the query string
     router.replace(pathname ?? "/", { scroll: false });
+  };
+
+  useEffect(() => {
+    if (user && isOpen) {
+      close();
+    }
+  }, [user, isOpen]);
+
+  const handleGoogleSignIn = async () => {
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      // Automatically sync the new user session into our Firestore NoSQL database
+      await syncUserProfile(result.user.uid, result.user.displayName, result.user.email);
+      close();
+    } catch (error: unknown) {
+      console.error("Error signing in with Google", error);
+      if (error instanceof Error) {
+        alert("Google Auth Error: " + error.message);
+      }
+    }
+  };
+
+  const handleGithubSignIn = async () => {
+    try {
+      const result = await signInWithPopup(auth, githubProvider);
+      await syncUserProfile(result.user.uid, result.user.displayName, result.user.email);
+      close();
+    } catch (error: unknown) {
+      console.error("Error signing in with GitHub", error);
+      if (error instanceof Error) {
+        alert("GitHub Auth Error: " + error.message);
+      }
+    }
   };
 
   return (
@@ -60,10 +97,16 @@ export function SignInModal() {
              </p>
              
              <div className="w-full space-y-3">
-               <button className="w-full py-3 bg-apple-text text-apple-bg rounded-xl font-medium hover:opacity-90 transition-opacity">
+               <button 
+                 onClick={handleGithubSignIn}
+                 className="w-full py-3 bg-apple-text text-apple-bg rounded-xl font-medium hover:opacity-90 transition-opacity"
+               >
                  Continue with GitHub
                </button>
-               <button className="w-full py-3 border border-apple-border/40 text-apple-text rounded-xl font-medium hover:bg-apple-border/10 transition-colors">
+               <button 
+                 onClick={handleGoogleSignIn}
+                 className="w-full py-3 border border-apple-border/40 text-apple-text rounded-xl font-medium hover:bg-apple-border/10 transition-colors"
+               >
                  Continue with Google
                </button>
              </div>
