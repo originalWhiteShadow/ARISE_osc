@@ -67,16 +67,7 @@ export default async function NewsroomPage() {
                              alt={`News media ${imgIdx + 1}`} 
                              className="w-full h-full object-cover"
                              loading="lazy"
-                             onError={(e) => {
-                               // Fallback if image fails to load or ID is invalid
-                               (e.target as HTMLImageElement).style.display = 'none';
-                               (e.target as HTMLImageElement).nextElementSibling?.classList.remove('hidden');
-                             }}
                            />
-                           <div className="hidden absolute flex flex-col items-center gap-2 text-apple-text-muted/50">
-                             <ImageIcon className="w-8 h-8" />
-                             <span className="text-xs font-mono">IMAGE OFFLINE</span>
-                           </div>
                         </div>
                       ))}
                     </div>
