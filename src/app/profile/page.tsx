@@ -16,6 +16,7 @@ export default function ProfilePage() {
   const { user, loading } = useAuth();
   const [isFlipped, setIsFlipped] = useState(false);
   const [role, setRole] = useState<string | null>(null);
+  const [githubUsername, setGithubUsername] = useState<string | null>(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -25,6 +26,27 @@ export default function ProfilePage() {
           setRole(snap.data().role);
         }
       });
+    }
+
+    // Resolve GitHub Username from numeric UID
+    const screenName = (user as any)?.reloadUserInfo?.screenName;
+    if (screenName) {
+      setGithubUsername(screenName);
+      return;
+    }
+
+    const githubProvider = user?.providerData.find(p => p.providerId === 'github.com');
+    if (githubProvider?.uid) {
+      fetch(`https://api.github.com/user/${githubProvider.uid}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.login) {
+            setGithubUsername(data.login);
+          } else {
+            setGithubUsername(githubProvider.uid);
+          }
+        })
+        .catch(() => setGithubUsername(githubProvider.uid));
     }
   }, [user]);
 
@@ -134,42 +156,19 @@ export default function ProfilePage() {
                <span className="truncate">{user.email || "No email linked"}</span>
              </div>
              
-             <div className="text-xs font-mono text-apple-accent tracking-widest mt-4 flex flex-col gap-1">
-               <span className="opacity-50">SYSTEM UID</span>
-               <span className="break-all">{user.uid}</span>
-             </div>
-
-             <div className="text-xs font-mono text-apple-accent tracking-widest mt-4 flex flex-col gap-1">
-               <span className="opacity-50">LINKED PROVIDERS</span>
-               <div className="flex flex-wrap justify-center gap-2 mt-1">
-                 {user.providerData.map(p => (
-                   <span key={p.providerId} className="px-2 py-1 bg-apple-border/20 text-apple-text rounded-md flex items-center gap-1">
-                     {p.providerId === 'github.com' && <AtSign className="w-3 h-3" />}
-                     {p.providerId.replace('.com', '')}
-                   </span>
-                 ))}
+             {githubUsername && (
+               <div className="text-xs font-mono tracking-widest mt-4 flex justify-center">
+                 <a 
+                   href={`https://github.com/${githubUsername}`} 
+                   target="_blank" 
+                   rel="noopener noreferrer" 
+                   className="break-all text-apple-text hover:underline hover:text-apple-accent transition-colors flex items-center gap-1.5 px-3 py-1.5 bg-apple-border/10 rounded-full border border-apple-border/20"
+                 >
+                   <AtSign className="w-3.5 h-3.5 text-apple-accent" /> 
+                   @{githubUsername}
+                 </a>
                </div>
-             </div>
-
-             {(() => {
-               const githubProvider = user?.providerData.find(p => p.providerId === 'github.com');
-               const githubScreenName = (user as any)?.reloadUserInfo?.screenName;
-               
-               if (!githubProvider) return null;
-
-               return (
-                 <div className="text-xs font-mono text-apple-accent tracking-widest mt-4 flex flex-col gap-1">
-                   <span className="opacity-50 flex justify-center items-center gap-1"><AtSign className="w-3 h-3" /> GIT IDENTITY</span>
-                   {githubScreenName ? (
-                     <a href={`https://github.com/${githubScreenName}`} target="_blank" rel="noopener noreferrer" className="break-all text-apple-text hover:underline hover:text-apple-accent transition-colors">
-                       @{githubScreenName}
-                     </a>
-                   ) : (
-                     <span className="break-all text-apple-text">{githubProvider.uid}</span>
-                   )}
-                 </div>
-               );
-             })()}
+             )}
           </div>
 
           <button 
