@@ -10,7 +10,7 @@ import { signOut } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { Github } from "lucide-react";
+import { AtSign } from "lucide-react";
 
 export default function ProfilePage() {
   const { user, loading } = useAuth();
@@ -147,7 +147,7 @@ export default function ProfilePage() {
 
                return (
                  <div className="text-xs font-mono text-apple-accent tracking-widest mt-4 flex flex-col gap-1">
-                   <span className="opacity-50 flex justify-center items-center gap-1"><Github className="w-3 h-3" /> GIT USER</span>
+                   <span className="opacity-50 flex justify-center items-center gap-1"><AtSign className="w-3 h-3" /> GIT USER</span>
                    {githubScreenName ? (
                      <a href={`https://github.com/${githubScreenName}`} target="_blank" rel="noopener noreferrer" className="break-all text-apple-text hover:underline hover:text-apple-accent transition-colors">
                        @{githubScreenName}
