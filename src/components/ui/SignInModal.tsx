@@ -15,6 +15,7 @@ export function SignInModal() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [isOpen, setIsOpen] = useState(false);
+  const [pendingLink, setPendingLink] = useState<{ provider: 'google' | 'github', credential: any } | null>(null);
   const { user } = useAuth();
 
   useEffect(() => {
@@ -22,6 +23,7 @@ export function SignInModal() {
   }, [searchParams]);
 
   const close = () => {
+    setPendingLink(null);
     router.replace(pathname ?? "/", { scroll: false });
   };
 
@@ -34,24 +36,12 @@ export function SignInModal() {
   const handleGoogleSignIn = async () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
-      // Automatically sync the new user session into our Firestore NoSQL database
       await syncUserProfile(result.user.uid, result.user.displayName, result.user.email);
       close();
     } catch (error: any) {
       if (error.code === "auth/account-exists-with-different-credential") {
         const pendingCred = GoogleAuthProvider.credentialFromError(error);
-        try {
-          // Silently trigger alternate sign-in to auto-link
-          const result = await signInWithPopup(auth, githubProvider);
-          if (pendingCred) {
-            await linkWithCredential(result.user, pendingCred);
-          }
-          await syncUserProfile(result.user.uid, result.user.displayName, result.user.email);
-          close();
-        } catch (linkError: any) {
-          console.error("Link error:", linkError);
-          alert("Failed to link accounts: " + linkError.message);
-        }
+        setPendingLink({ provider: 'github', credential: pendingCred });
       } else {
         console.error("Error signing in with Google", error);
         alert("Google Auth Error: " + error.message);
@@ -67,22 +57,28 @@ export function SignInModal() {
     } catch (error: any) {
       if (error.code === "auth/account-exists-with-different-credential") {
         const pendingCred = GithubAuthProvider.credentialFromError(error);
-        try {
-          // Silently trigger alternate sign-in to auto-link
-          const result = await signInWithPopup(auth, googleProvider);
-          if (pendingCred) {
-            await linkWithCredential(result.user, pendingCred);
-          }
-          await syncUserProfile(result.user.uid, result.user.displayName, result.user.email);
-          close();
-        } catch (linkError: any) {
-          console.error("Link error:", linkError);
-          alert("Failed to link accounts: " + linkError.message);
-        }
+        setPendingLink({ provider: 'google', credential: pendingCred });
       } else {
         console.error("Error signing in with GitHub", error);
         alert("GitHub Auth Error: " + error.message);
       }
+    }
+  };
+
+  const handleLinkAccount = async () => {
+    if (!pendingLink) return;
+    try {
+      const provider = pendingLink.provider === 'google' ? googleProvider : githubProvider;
+      const result = await signInWithPopup(auth, provider);
+      if (pendingLink.credential) {
+        await linkWithCredential(result.user, pendingLink.credential);
+      }
+      await syncUserProfile(result.user.uid, result.user.displayName, result.user.email);
+      close();
+    } catch (err: any) {
+      console.error("Link error:", err);
+      alert("Failed to link accounts: " + err.message);
+      setPendingLink(null);
     }
   };
 
@@ -119,25 +115,46 @@ export function SignInModal() {
                  className="object-contain invert dark:invert-0"
                />
              </div>
-             <h2 className="text-2xl font-bold mb-2">Sign In to ARISE</h2>
+             <h2 className="text-2xl font-bold mb-2">
+               {pendingLink ? "Account Exists" : "Sign In to ARISE"}
+             </h2>
              <p className="text-apple-text-muted text-sm mb-8">
-               Seamless authentication to access dashboards, tasks, and contributions.
+               {pendingLink 
+                 ? `Your email is already registered. Please verify via ${pendingLink.provider === 'google' ? 'Google' : 'GitHub'} to link them.`
+                 : "Seamless authentication to access dashboards, tasks, and contributions."}
              </p>
              
-             <div className="w-full space-y-3">
-               <button 
-                 onClick={handleGithubSignIn}
-                 className="w-full py-3 bg-apple-text text-apple-bg rounded-xl font-medium hover:opacity-90 transition-opacity"
-               >
-                 Continue with GitHub
-               </button>
-               <button 
-                 onClick={handleGoogleSignIn}
-                 className="w-full py-3 border border-apple-border/40 text-apple-text rounded-xl font-medium hover:bg-apple-border/10 transition-colors"
-               >
-                 Continue with Google
-               </button>
-             </div>
+             {pendingLink ? (
+               <div className="w-full space-y-4">
+                 <button 
+                   onClick={handleLinkAccount}
+                   className="w-full py-3 bg-apple-accent text-apple-bg rounded-xl font-medium hover:opacity-90 transition-opacity"
+                 >
+                   Verify with {pendingLink.provider === 'google' ? 'Google' : 'GitHub'}
+                 </button>
+                 <button 
+                   onClick={() => setPendingLink(null)}
+                   className="text-xs text-apple-text-muted hover:text-apple-text transition-colors"
+                 >
+                   Cancel Linking
+                 </button>
+               </div>
+             ) : (
+               <div className="w-full space-y-3">
+                 <button 
+                   onClick={handleGithubSignIn}
+                   className="w-full py-3 bg-apple-text text-apple-bg rounded-xl font-medium hover:opacity-90 transition-opacity"
+                 >
+                   Continue with GitHub
+                 </button>
+                 <button 
+                   onClick={handleGoogleSignIn}
+                   className="w-full py-3 border border-apple-border/40 text-apple-text rounded-xl font-medium hover:bg-apple-border/10 transition-colors"
+                 >
+                   Continue with Google
+                 </button>
+               </div>
+             )}
              
           </motion.div>
         </div>
