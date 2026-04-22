@@ -57,7 +57,7 @@ export default function Navbar() {
           {/* Desktop Nav */}
           <nav className="hidden md:flex flex-1 justify-center items-center gap-8 text-[13px] font-mono uppercase tracking-wider text-apple-text-muted">
             <Link href="/projects" className="hover:text-apple-text hover:-translate-y-0.5 transition-all">Projects</Link>
-            <Link href="/blogs" className="hover:text-apple-text hover:-translate-y-0.5 transition-all">Newsroom</Link>
+            <Link href="/newsroom" className="hover:text-apple-text hover:-translate-y-0.5 transition-all">Newsroom</Link>
             <Link href="/learn" className="hover:text-apple-text hover:-translate-y-0.5 transition-all">Knowledge</Link>
             <Link href="/about" className="hover:text-apple-text hover:-translate-y-0.5 transition-all">Sys_About</Link>
           </nav>
@@ -149,7 +149,7 @@ export default function Navbar() {
           >
             <nav className="flex flex-col items-center gap-8 text-xl font-mono uppercase tracking-[0.2em] text-apple-text">
               <Link href="/projects" onClick={() => setMobileMenuOpen(false)} className="hover:text-apple-accent transition-colors">Projects_DB</Link>
-              <Link href="/blogs" onClick={() => setMobileMenuOpen(false)} className="hover:text-apple-accent transition-colors">Transmission_Log</Link>
+              <Link href="/newsroom" onClick={() => setMobileMenuOpen(false)} className="hover:text-apple-accent transition-colors">Transmission_Log</Link>
               <Link href="/learn" onClick={() => setMobileMenuOpen(false)} className="hover:text-apple-accent transition-colors">Neural_Net</Link>
               <Link href="/about" onClick={() => setMobileMenuOpen(false)} className="hover:text-apple-accent transition-colors">Core_Sys</Link>
               

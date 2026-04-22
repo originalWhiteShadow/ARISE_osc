@@ -90,3 +90,27 @@ function parseCSVLine(line: string): string[] {
   result.push(currentVal);
   return result;
 }
+
+/**
+ * Extracts a Google Drive File ID from a public link and converts it to a raw image URL.
+ * Supports standard share links and raw IDs.
+ */
+export function parseGoogleDriveImageLinks(rawLinks: string): string[] {
+  if (!rawLinks) return [];
+  
+  // Split by comma in case the user pastes multiple links
+  const links = rawLinks.split(',').map(l => l.trim()).filter(l => l !== "");
+  
+  return links.map(url => {
+    const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
+    const fileId = match ? match[1] : null;
+    
+    // If it's just a raw ID instead of a link
+    const finalId = fileId || (url.length > 15 && !url.includes('/') ? url : null);
+    
+    if (finalId) {
+      return `https://drive.google.com/uc?export=view&id=${finalId}`;
+    }
+    return url; // fallback to raw string if parsing fails
+  });
+}
