@@ -49,12 +49,12 @@ export function SplashScreen() {
             <span className="font-mono tracking-[0.3em] uppercase text-sm text-apple-text">
               INITIALIZING_SYS
             </span>
-            <div className="w-48 h-[2px] bg-apple-border/30 overflow-hidden rounded-full">
+            <div className="w-48 h-[2px] bg-apple-border/30 overflow-hidden rounded-full flex justify-start">
               <motion.div
-                initial={{ width: "0%" }}
-                animate={{ width: "100%" }}
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: 1 }}
                 transition={{ duration: 1.5, ease: "circOut" }}
-                className="h-full bg-apple-text"
+                className="h-full bg-apple-text w-full origin-left"
               />
             </div>
           </motion.div>

@@ -69,9 +69,9 @@ export function GlobalDecorations() {
       {/* Extreme Center ARISE_osc Text */}
       <motion.div 
         style={{ x: mouseShiftX, y: mouseShiftY }}
-        className="fixed inset-0 flex items-center justify-center pointer-events-none -z-20"
+        className="fixed inset-0 flex items-center justify-center pointer-events-none -z-20 will-change-transform"
       >
-        <h1 className="text-[15vw] font-bold text-apple-text/15 dark:text-apple-text/5 select-none tracking-tighter mix-blend-multiply dark:mix-blend-overlay">
+        <h1 className="text-[15vw] font-bold text-apple-text/5 select-none tracking-tighter">
           ARISE_osc
         </h1>
       </motion.div>
@@ -85,7 +85,7 @@ export function GlobalDecorations() {
       {/* Foreground Right Floating Geometric Cube Removed */}
       <motion.div 
         style={{ rotate: spinnerRotate, y: fgY2, x: mouseShiftX }}
-        className="fixed top-[60vh] left-[15vw] -z-10 opacity-40 dark:opacity-20 pointer-events-none w-48 h-48 flex items-center justify-center scale-150 mix-blend-multiply dark:mix-blend-screen"
+        className="fixed top-[60vh] left-[15vw] -z-10 opacity-30 dark:opacity-10 pointer-events-none w-48 h-48 flex items-center justify-center scale-150 will-change-transform"
       >
         {/* Core Bearing */}
         <div className="absolute w-12 h-12 rounded-full border-2 border-apple-accent bg-apple-bg z-10 box-border" />
