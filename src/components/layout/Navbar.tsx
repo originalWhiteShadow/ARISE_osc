@@ -2,9 +2,9 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { Menu, X, Flashlight, User } from 'lucide-react';
+import { Menu, X, Flashlight, User, Download } from 'lucide-react';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '@/components/providers/AuthProvider';
 import { signOut } from 'firebase/auth';
@@ -13,6 +13,29 @@ import { auth } from '@/lib/firebase/config';
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { user, loading } = useAuth();
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+
+  useEffect(() => {
+    const handleBeforeInstallPrompt = (e: any) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    };
+  }, []);
+
+  const handleInstallClick = async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') {
+      setDeferredPrompt(null);
+    }
+  };
 
   return (
     <>
@@ -81,21 +104,6 @@ export default function Navbar() {
 
           {/* Mobile Menu Button */}
           <div className="flex md:hidden items-center gap-1 z-50">
-            {!loading ? (
-              user ? (
-                <Link href="/profile" className="flex items-center justify-center w-8 h-8 mr-1 group relative rounded-full border border-apple-border overflow-hidden bg-apple-border/20" title="Access System Profile">
-                  {user.photoURL ? (
-                    <img src={user.photoURL} alt="Profile" className="w-full h-full object-cover" />
-                  ) : (
-                    <User className="w-4 h-4 text-apple-text-muted" />
-                  )}
-                </Link>
-              ) : (
-                <Link href="?login=true" className="flex items-center justify-center w-8 h-8 mr-1 group relative rounded-full border border-apple-border overflow-hidden bg-apple-border/20" title="Login">
-                  <User className="w-4 h-4 text-apple-text-muted" />
-                </Link>
-              )
-            ) : null}
             <button 
               onClick={() => window.dispatchEvent(new Event('toggle-torch'))}
               className="p-1.5 text-apple-text hover:bg-apple-border/20 rounded-md transition-colors"
@@ -103,6 +111,21 @@ export default function Navbar() {
               <Flashlight className="w-4 h-4" />
             </button>
             <ThemeToggle />
+            {!loading ? (
+              user ? (
+                <Link href="/profile" className="flex items-center justify-center w-8 h-8 mx-1 group relative rounded-full border border-apple-border overflow-hidden bg-apple-border/20" title="Access System Profile">
+                  {user.photoURL ? (
+                    <img src={user.photoURL} alt="Profile" className="w-full h-full object-cover" />
+                  ) : (
+                    <User className="w-4 h-4 text-apple-text-muted" />
+                  )}
+                </Link>
+              ) : (
+                <Link href="?login=true" className="flex items-center justify-center w-8 h-8 mx-1 group relative rounded-full border border-apple-border overflow-hidden bg-apple-border/20" title="Login">
+                  <User className="w-4 h-4 text-apple-text-muted" />
+                </Link>
+              )
+            ) : null}
             <button 
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-1.5 text-apple-text flex flex-col justify-center items-center w-8 h-8 relative"
@@ -129,6 +152,19 @@ export default function Navbar() {
               <Link href="/blogs" onClick={() => setMobileMenuOpen(false)} className="hover:text-apple-accent transition-colors">Transmission_Log</Link>
               <Link href="/learn" onClick={() => setMobileMenuOpen(false)} className="hover:text-apple-accent transition-colors">Neural_Net</Link>
               <Link href="/about" onClick={() => setMobileMenuOpen(false)} className="hover:text-apple-accent transition-colors">Core_Sys</Link>
+              
+              {deferredPrompt && (
+                <button 
+                  onClick={() => {
+                    handleInstallClick();
+                    setMobileMenuOpen(false);
+                  }} 
+                  className="mt-4 hover:text-apple-accent transition-colors flex items-center gap-2 text-apple-accent"
+                >
+                  <Download className="w-5 h-5" />
+                  Install_App
+                </button>
+              )}
               
               <div className="mt-8 pt-8 border-t border-apple-border/50 flex w-48 justify-center">
                 {!loading && user ? (

@@ -9,7 +9,7 @@ export function GlobalHUD() {
   if (!mounted) return null;
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-[60] overflow-hidden mix-blend-difference dark:mix-blend-screen opacity-50 transition-opacity duration-700">
+    <div className="fixed inset-0 pointer-events-none z-[60] overflow-hidden mix-blend-multiply dark:mix-blend-screen opacity-50 transition-opacity duration-700">
        {/* Corner Crosshairs */}
        <div className="absolute top-4 left-4 w-6 h-6 border-l-[1.5px] border-t-[1.5px] border-apple-text"></div>
        <div className="absolute top-4 right-4 w-6 h-6 border-r-[1.5px] border-t-[1.5px] border-apple-text"></div>
