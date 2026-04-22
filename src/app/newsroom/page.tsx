@@ -89,7 +89,7 @@ export default async function NewsroomPage() {
                 )}
                 
                 <p className="text-apple-text-muted leading-relaxed whitespace-pre-wrap">
-                  {item.Content || "No detailed contents available."}
+                  {item.Content || item.Description || "No detailed contents available."}
                 </p>
               </div>
             );
