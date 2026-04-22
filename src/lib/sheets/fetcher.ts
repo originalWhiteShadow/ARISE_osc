@@ -79,15 +79,15 @@ function parseCSVLine(line: string): string[] {
       // Toggle quote state
       inQuotes = !inQuotes;
     } else if (char === ',' && !inQuotes) {
-      // Split on comma only if we are not inside quotes
-      result.push(currentVal);
+      // Strip surrounding quotes if present before pushing
+      result.push(currentVal.replace(/^"|"$/g, ''));
       currentVal = "";
     } else {
       currentVal += char;
     }
   }
   
-  result.push(currentVal);
+  result.push(currentVal.replace(/^"|"$/g, ''));
   return result;
 }
 

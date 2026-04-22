@@ -31,7 +31,7 @@ export default async function NewsroomPage() {
       ) : (
         <div className="flex flex-col gap-10 w-full max-w-4xl mb-12 relative z-10">
           {newsItems.map((item, idx) => {
-            const images = parseGoogleDriveImageLinks(item.Images || item.ImageLinks || item.Image || "");
+            const images = parseGoogleDriveImageLinks(item.Images || item.ImageLinks || item.Image || item.Link || "");
             
             return (
               <div key={idx} className="apple-card glass-heavy p-8 flex flex-col transition-all duration-500 transform-gpu hover:shadow-2xl">
