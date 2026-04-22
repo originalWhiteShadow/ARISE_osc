@@ -139,21 +139,33 @@ export default function ProfilePage() {
                <span className="break-all">{user.uid}</span>
              </div>
 
+             <div className="text-xs font-mono text-apple-accent tracking-widest mt-4 flex flex-col gap-1">
+               <span className="opacity-50">LINKED PROVIDERS</span>
+               <div className="flex flex-wrap justify-center gap-2 mt-1">
+                 {user.providerData.map(p => (
+                   <span key={p.providerId} className="px-2 py-1 bg-apple-border/20 text-apple-text rounded-md flex items-center gap-1">
+                     {p.providerId === 'github.com' && <AtSign className="w-3 h-3" />}
+                     {p.providerId.replace('.com', '')}
+                   </span>
+                 ))}
+               </div>
+             </div>
+
              {(() => {
+               const githubProvider = user?.providerData.find(p => p.providerId === 'github.com');
                const githubScreenName = (user as any)?.reloadUserInfo?.screenName;
-               const githubId = user?.providerData.find(p => p.providerId === 'github.com')?.uid;
                
-               if (!githubScreenName && !githubId) return null;
+               if (!githubProvider) return null;
 
                return (
                  <div className="text-xs font-mono text-apple-accent tracking-widest mt-4 flex flex-col gap-1">
-                   <span className="opacity-50 flex justify-center items-center gap-1"><AtSign className="w-3 h-3" /> GIT USER</span>
+                   <span className="opacity-50 flex justify-center items-center gap-1"><AtSign className="w-3 h-3" /> GIT IDENTITY</span>
                    {githubScreenName ? (
                      <a href={`https://github.com/${githubScreenName}`} target="_blank" rel="noopener noreferrer" className="break-all text-apple-text hover:underline hover:text-apple-accent transition-colors">
                        @{githubScreenName}
                      </a>
                    ) : (
-                     <span className="break-all text-apple-text">{githubId}</span>
+                     <span className="break-all text-apple-text">{githubProvider.uid}</span>
                    )}
                  </div>
                );
