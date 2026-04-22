@@ -1,29 +1,30 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
-import { Settings, Settings2, GitMerge, Cpu } from "lucide-react";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { Settings, Settings2, GitMerge, Cpu, Fan } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export function MorphGear() {
   const { scrollYProgress } = useScroll();
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 50, damping: 20 });
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
-  const y1 = useTransform(scrollYProgress, [0, 1], ["0vh", "30vh"]);
-  const y2 = useTransform(scrollYProgress, [0, 1], ["0vh", "-40vh"]);
-  const y3 = useTransform(scrollYProgress, [0, 1], ["0vh", "60vh"]);
+  const y1 = useTransform(smoothProgress, [0, 1], ["0vh", "30vh"]);
+  const y2 = useTransform(smoothProgress, [0, 1], ["0vh", "-40vh"]);
+  const y3 = useTransform(smoothProgress, [0, 1], ["0vh", "60vh"]);
 
-  const r1 = useTransform(scrollYProgress, [0, 1], [0, 360]);
-  const r2 = useTransform(scrollYProgress, [0, 1], [360, -180]);
-  const r3 = useTransform(scrollYProgress, [0, 1], [0, 540]);
+  const r1 = useTransform(smoothProgress, [0, 1], [0, 360]);
+  const r2 = useTransform(smoothProgress, [0, 1], [360, -180]);
+  const r3 = useTransform(smoothProgress, [0, 1], [0, 540]);
 
   // Dynamic grid scaling
-  const gridScale = useTransform(scrollYProgress, [0, 1], [1, 1.2]);
+  const gridScale = useTransform(smoothProgress, [0, 1], [1, 1.2]);
 
   // Inline morphs moved up
-  const borderRadiusMorph = useTransform(scrollYProgress, [0, 0.5, 1], ["20%", "50%", "20%"]);
-  const r4 = useTransform(scrollYProgress, [0, 1], [0, -360]);
-  const scaleMorph = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.8, 1]);
+  const borderRadiusMorph = useTransform(smoothProgress, [0, 0.5, 1], ["20%", "50%", "20%"]);
+  const r4 = useTransform(smoothProgress, [0, 1], [0, -360]);
+  const scaleMorph = useTransform(smoothProgress, [0, 0.5, 1], [1, 0.8, 1]);
 
   if (!mounted) return null;
 
@@ -32,7 +33,7 @@ export function MorphGear() {
       
       {/* Maximalist Wireframe Background Grid */}
       <motion.div 
-        className="absolute inset-0 opacity-[0.07] dark:opacity-[0.1]"
+        className="absolute inset-0 opacity-[0.15] dark:opacity-[0.1]"
         style={{
           scale: gridScale,
           backgroundImage: 'radial-gradient(circle at center, var(--border) 1px, transparent 1px)',
@@ -43,17 +44,17 @@ export function MorphGear() {
       {/* Engineering Accent - Cpu / Circuit */}
       <motion.div
         style={{ rotate: r2, y: y2 }}
-        className="absolute w-32 h-32 md:w-64 md:h-64 top-1/4 left-[8%] text-apple-border/80 dark:text-apple-border/40 flex items-center justify-center"
+        className="absolute w-32 h-32 md:w-64 md:h-64 top-1/4 left-[8%] text-apple-border flex items-center justify-center opacity-40"
       >
         <Settings className="w-full h-full" strokeWidth={0.5} />
-        <div className="absolute w-px h-[200vh] bg-apple-border/20 left-1/2 -translate-x-1/2" />
-        <div className="absolute h-px w-[200vw] bg-apple-border/20 top-1/2 -translate-y-1/2" />
+        <div className="absolute w-px h-[200vh] bg-apple-border/40 dark:bg-apple-border/20 left-1/2 -translate-x-1/2" />
+        <div className="absolute h-px w-[200vw] bg-apple-border/40 dark:bg-apple-border/20 top-1/2 -translate-y-1/2" />
       </motion.div>
 
       {/* Engineering Coil Layer */}
       <motion.div
         style={{ y: y1 }}
-        className="absolute left-[20%] top-[0%] w-24 md:w-32 h-[120vh] opacity-20 dark:opacity-[0.15] text-apple-accent overflow-hidden"
+        className="absolute left-[20%] top-[0%] w-24 md:w-32 h-[120vh] opacity-40 dark:opacity-[0.15] text-apple-accent overflow-hidden"
       >
         <svg viewBox="0 0 100 800" preserveAspectRatio="none" className="w-full h-full stroke-current fill-none">
           {/* Back loops off coil (dashed for depth) */}
@@ -66,10 +67,10 @@ export function MorphGear() {
       {/* Engineering Accent - Database / Git Merge */}
       <motion.div
         style={{ rotate: r3, y: y3 }}
-        className="absolute w-24 h-24 md:w-48 md:h-48 bottom-1/4 right-[8%] text-apple-accent/20 flex flex-col items-center justify-center"
+        className="absolute w-24 h-24 md:w-48 md:h-48 bottom-1/4 right-[8%] text-apple-accent/40 dark:text-apple-accent/20 flex flex-col items-center justify-center"
       >
         <GitMerge className="w-full h-full mb-4" strokeWidth={0.5} />
-        <div className="w-[30vw] h-px bg-apple-accent/20 absolute right-0" />
+        <div className="w-[30vw] h-px bg-apple-accent/30 dark:bg-apple-accent/20 absolute right-0" />
       </motion.div>
       
       {/* HUD Reticle */}
@@ -78,6 +79,15 @@ export function MorphGear() {
         <div className="absolute top-0 bottom-0 w-px bg-apple-text/5" />
         <div className="absolute left-0 right-0 h-px bg-apple-text/5" />
       </div>
+
+      {/* Auto-Animated Fan */}
+      <motion.div
+        animate={{ rotate: 360 }}
+        transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
+        className="absolute w-48 h-48 md:w-80 md:h-80 top-[15%] right-[15%] text-pink-500/30 flex items-center justify-center -z-20 opacity-60"
+      >
+        <Fan className="w-full h-full" strokeWidth={0.5} />
+      </motion.div>
 
     </div>
   );

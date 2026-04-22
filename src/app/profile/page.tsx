@@ -3,7 +3,7 @@
 import { useAuth } from "@/components/providers/AuthProvider";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import QRCode from "react-qr-code";
+import { QRCode } from "react-qrcode-logo";
 import { LogOut, Mail, User as UserIcon, ShieldAlert } from "lucide-react";
 import { auth, db } from "@/lib/firebase/config";
 import { signOut } from "firebase/auth";
@@ -102,12 +102,21 @@ export default function ProfilePage() {
                 className="absolute inset-0 w-full h-full rounded-full border-4 border-apple-accent overflow-hidden shadow-2xl bg-white flex items-center justify-center"
                 style={{ transform: "rotateY(180deg)", backfaceVisibility: "hidden" }}
               >
-                 <div className="p-4 bg-white rounded-xl">
+                 <div className="p-3 bg-white rounded-2xl shadow-inner border border-zinc-100">
                    <QRCode 
                      value={`arise-user-${user.email || user.uid}`} 
-                     size={120}
+                     size={130}
                      bgColor="#ffffff"
-                     fgColor="#000000"
+                     fgColor="#27272a" // zinc-800 for dots
+                     qrStyle="dots"
+                     ecLevel="Q" // Higher error correction for logo
+                     eyeRadius={12} // Fully rounded corners
+                     eyeColor="#0ea5e9" // tech blue eyes
+                     logoImage="/logo.png"
+                     logoWidth={35}
+                     logoHeight={35}
+                     logoPadding={2}
+                     logoPaddingStyle="circle"
                    />
                  </div>
               </div>

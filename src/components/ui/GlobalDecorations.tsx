@@ -6,14 +6,15 @@ import { useEffect, useState } from "react";
 
 export function GlobalDecorations() {
   const { scrollYProgress } = useScroll();
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 50, damping: 20 });
 
   // Scroll Parallax Elements
-  const fgRotate1 = useTransform(scrollYProgress, [0, 1], [-45, 180]);
-  const fgY1 = useTransform(scrollYProgress, [0, 1], [0, -600]);
+  const fgRotate1 = useTransform(smoothProgress, [0, 1], [-45, 180]);
+  const fgY1 = useTransform(smoothProgress, [0, 1], [0, -600]);
   
   // Fast Fidget Spinner Rotation
-  const spinnerRotate = useTransform(scrollYProgress, [0, 1], [0, 1440]);
-  const fgY2 = useTransform(scrollYProgress, [0, 1], [0, -500]);
+  const spinnerRotate = useTransform(smoothProgress, [0, 1], [0, 1440]);
+  const fgY2 = useTransform(smoothProgress, [0, 1], [0, -500]);
 
   // Cursor Parallax Engine
   const mouseX = useMotionValue(0);
@@ -81,32 +82,26 @@ export function GlobalDecorations() {
         className="fixed top-0 left-0 w-[400px] h-[400px] -ml-[200px] -mt-[200px] rounded-full bg-apple-accent/5 dark:bg-apple-accent/10 blur-3xl pointer-events-none -z-10"
       />
 
-      {/* Foreground Right Floating Geometric Cube */}
-      <motion.div 
-        style={{ rotate: fgRotate1, y: fgY1, x: invertShiftX }}
-        className="fixed top-[60vh] right-[10vw] w-12 h-12 border-2 border-apple-accent z-40 pointer-events-none backdrop-blur-md bg-apple-bg/10"
-      />
-
-      {/* Foreground Left Fidget Spinner (replaces standard square) */}
+      {/* Foreground Right Floating Geometric Cube Removed */}
       <motion.div 
         style={{ rotate: spinnerRotate, y: fgY2, x: mouseShiftX }}
-        className="fixed top-[80vh] left-[8vw] z-40 pointer-events-none w-24 h-24 flex items-center justify-center"
+        className="fixed top-[60vh] left-[15vw] -z-10 opacity-40 dark:opacity-20 pointer-events-none w-48 h-48 flex items-center justify-center scale-150 mix-blend-multiply dark:mix-blend-screen"
       >
         {/* Core Bearing */}
-        <div className="absolute w-8 h-8 rounded-full border-2 border-apple-accent bg-apple-bg z-10 box-border" />
-        <div className="absolute w-3 h-3 rounded-full bg-apple-text/40 z-20" />
+        <div className="absolute w-12 h-12 rounded-full border-2 border-apple-accent bg-apple-bg z-10 box-border" />
+        <div className="absolute w-4 h-4 rounded-full bg-apple-text/40 z-20" />
         
         {/* Arm 1 */}
-        <div className="absolute top-0 w-8 h-10 border-[1.5px] border-apple-text/30 bg-apple-bg/40 backdrop-blur-sm rounded-t-full flex items-start justify-center pt-1 shadow-lg">
-           <div className="w-4 h-4 rounded-full border border-apple-text/20"></div>
+        <div className="absolute top-0 w-12 h-16 border-[1.5px] border-apple-text/40 dark:border-apple-text/20 bg-apple-text/5 dark:bg-apple-bg/10 rounded-t-full flex items-start justify-center pt-2">
+           <div className="w-6 h-6 rounded-full border border-apple-text/20 dark:border-apple-text/10"></div>
         </div>
         {/* Arm 2 */}
-        <div className="absolute bottom-1 right-0 w-8 h-10 border-[1.5px] border-apple-text/30 bg-apple-bg/40 backdrop-blur-sm rounded-t-full flex items-start justify-center pt-1 origin-top rotate-[120deg] shadow-lg">
-           <div className="w-4 h-4 rounded-full border border-apple-text/20"></div>
+        <div className="absolute bottom-2 right-1 w-12 h-16 border-[1.5px] border-apple-text/40 dark:border-apple-text/20 bg-apple-text/5 dark:bg-apple-bg/10 rounded-t-full flex items-start justify-center pt-2 origin-top rotate-[120deg]">
+           <div className="w-6 h-6 rounded-full border border-apple-text/20 dark:border-apple-text/10"></div>
         </div>
         {/* Arm 3 */}
-        <div className="absolute bottom-1 left-0 w-8 h-10 border-[1.5px] border-apple-text/30 bg-apple-bg/40 backdrop-blur-sm rounded-t-full flex items-start justify-center pt-1 origin-top -rotate-[120deg] shadow-lg">
-           <div className="w-4 h-4 rounded-full border border-apple-text/20"></div>
+        <div className="absolute bottom-2 left-1 w-12 h-16 border-[1.5px] border-apple-text/40 dark:border-apple-text/20 bg-apple-text/5 dark:bg-apple-bg/10 rounded-t-full flex items-start justify-center pt-2 origin-top -rotate-[120deg]">
+           <div className="w-6 h-6 rounded-full border border-apple-text/20 dark:border-apple-text/10"></div>
         </div>
       </motion.div>
     </>

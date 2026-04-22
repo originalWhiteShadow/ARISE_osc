@@ -80,17 +80,32 @@ export default function Navbar() {
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="flex md:hidden items-center gap-2 z-50">
+          <div className="flex md:hidden items-center gap-1 z-50">
+            {!loading ? (
+              user ? (
+                <Link href="/profile" className="flex items-center justify-center w-8 h-8 mr-1 group relative rounded-full border border-apple-border overflow-hidden bg-apple-border/20" title="Access System Profile">
+                  {user.photoURL ? (
+                    <img src={user.photoURL} alt="Profile" className="w-full h-full object-cover" />
+                  ) : (
+                    <User className="w-4 h-4 text-apple-text-muted" />
+                  )}
+                </Link>
+              ) : (
+                <Link href="?login=true" className="flex items-center justify-center w-8 h-8 mr-1 group relative rounded-full border border-apple-border overflow-hidden bg-apple-border/20" title="Login">
+                  <User className="w-4 h-4 text-apple-text-muted" />
+                </Link>
+              )
+            ) : null}
             <button 
               onClick={() => window.dispatchEvent(new Event('toggle-torch'))}
-              className="p-2 text-apple-text hover:bg-apple-border/20 rounded-md transition-colors"
+              className="p-1.5 text-apple-text hover:bg-apple-border/20 rounded-md transition-colors"
             >
               <Flashlight className="w-4 h-4" />
             </button>
             <ThemeToggle />
             <button 
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 text-apple-text flex flex-col justify-center items-center w-8 h-8 relative"
+              className="p-1.5 text-apple-text flex flex-col justify-center items-center w-8 h-8 relative"
             >
               <div className={`w-5 h-0.5 bg-current transition-all absolute ${mobileMenuOpen ? 'rotate-45' : '-translate-y-1.5'}`} />
               <div className={`w-5 h-0.5 bg-current transition-all absolute ${mobileMenuOpen ? 'opacity-0' : 'opacity-100'}`} />
