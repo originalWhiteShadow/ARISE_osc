@@ -29,11 +29,14 @@ export default function Navbar() {
   }, []);
 
   const handleInstallClick = async () => {
-    if (!deferredPrompt) return;
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    if (outcome === 'accepted') {
-      setDeferredPrompt(null);
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === 'accepted') {
+        setDeferredPrompt(null);
+      }
+    } else {
+      alert("App is already installed, or your browser does not support automatic installation.\n\nTo install manually:\n• Chrome/Edge: Click the 3 dots menu -> 'Install App'\n• Safari (iOS): Tap the Share button -> 'Add to Home Screen'");
     }
   };
 
@@ -153,18 +156,16 @@ export default function Navbar() {
               <Link href="/learn" onClick={() => setMobileMenuOpen(false)} className="hover:text-apple-accent transition-colors">Neural_Net</Link>
               <Link href="/about" onClick={() => setMobileMenuOpen(false)} className="hover:text-apple-accent transition-colors">Core_Sys</Link>
               
-              {deferredPrompt && (
-                <button 
-                  onClick={() => {
-                    handleInstallClick();
-                    setMobileMenuOpen(false);
-                  }} 
-                  className="mt-4 hover:text-apple-accent transition-colors flex items-center gap-2 text-apple-accent"
-                >
-                  <Download className="w-5 h-5" />
-                  Install_App
-                </button>
-              )}
+              <button 
+                onClick={() => {
+                  handleInstallClick();
+                  setMobileMenuOpen(false);
+                }} 
+                className="mt-4 hover:text-apple-accent transition-colors flex items-center gap-2 text-apple-accent"
+              >
+                <Download className="w-5 h-5" />
+                Install_App
+              </button>
               
               <div className="mt-8 pt-8 border-t border-apple-border/50 flex w-48 justify-center">
                 {!loading && user ? (

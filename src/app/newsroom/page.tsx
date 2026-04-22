@@ -61,13 +61,15 @@ export default async function NewsroomPage() {
                       
                       {images.map((imgUrl, imgIdx) => (
                         <div key={imgIdx} className="w-full flex-none snap-center relative aspect-video bg-black/5 flex items-center justify-center">
-                           {/* eslint-disable-next-line @next/next/no-img-element */}
-                           <img 
-                             src={imgUrl} 
-                             alt={`News media ${imgIdx + 1}`} 
-                             className="w-full h-full object-cover"
-                             loading="lazy"
-                           />
+                           <a href={imgUrl} target="_blank" rel="noopener noreferrer" className="w-full h-full block">
+                             {/* eslint-disable-next-line @next/next/no-img-element */}
+                             <img 
+                               src={imgUrl} 
+                               alt={`News media ${imgIdx + 1}`} 
+                               className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                               loading="lazy"
+                             />
+                           </a>
                         </div>
                       ))}
                     </div>

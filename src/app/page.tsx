@@ -33,11 +33,14 @@ export default function Home() {
   }, []);
 
   const handleInstallClick = async () => {
-    if (!deferredPrompt) return;
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    if (outcome === 'accepted') {
-      setDeferredPrompt(null);
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === 'accepted') {
+        setDeferredPrompt(null);
+      }
+    } else {
+      alert("App is already installed, or your browser does not support automatic installation.\n\nTo install manually:\n• Chrome/Edge: Click the 3 dots menu -> 'Install App'\n• Safari (iOS): Tap the Share button -> 'Add to Home Screen'");
     }
   };
 
@@ -191,15 +194,10 @@ export default function Home() {
           
           <button 
             onClick={handleInstallClick}
-            disabled={!deferredPrompt}
-            className={`px-8 py-4 rounded-full font-mono tracking-widest text-sm flex items-center justify-center gap-3 transition-all duration-300 ${
-              deferredPrompt 
-                ? 'bg-apple-text text-apple-bg hover:opacity-80' 
-                : 'bg-apple-border/20 text-apple-text-muted cursor-not-allowed'
-            }`}
+            className="px-8 py-4 rounded-full font-mono tracking-widest text-sm flex items-center justify-center gap-3 transition-all duration-300 bg-apple-text text-apple-bg hover:opacity-80"
           >
             <Download className="w-5 h-5" />
-            {deferredPrompt ? 'INSTALL APP' : 'APP INSTALLED / UNAVAILABLE'}
+            INSTALL APP
           </button>
         </div>
       </section>
