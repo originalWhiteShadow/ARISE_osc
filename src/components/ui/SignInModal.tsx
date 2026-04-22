@@ -2,7 +2,7 @@
 
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { signInWithPopup } from "firebase/auth";
+import { signInWithPopup, linkWithCredential, GithubAuthProvider, GoogleAuthProvider } from "firebase/auth";
 import { auth, googleProvider, githubProvider } from "@/lib/firebase/config";
 import { useAuth } from "@/components/providers/AuthProvider";
 import { syncUserProfile } from "@/lib/firebase/firestore";
@@ -37,9 +37,23 @@ export function SignInModal() {
       // Automatically sync the new user session into our Firestore NoSQL database
       await syncUserProfile(result.user.uid, result.user.displayName, result.user.email);
       close();
-    } catch (error: unknown) {
-      console.error("Error signing in with Google", error);
-      if (error instanceof Error) {
+    } catch (error: any) {
+      if (error.code === "auth/account-exists-with-different-credential") {
+        const pendingCred = GoogleAuthProvider.credentialFromError(error);
+        try {
+          // Silently trigger alternate sign-in to auto-link
+          const result = await signInWithPopup(auth, githubProvider);
+          if (pendingCred) {
+            await linkWithCredential(result.user, pendingCred);
+          }
+          await syncUserProfile(result.user.uid, result.user.displayName, result.user.email);
+          close();
+        } catch (linkError: any) {
+          console.error("Link error:", linkError);
+          alert("Failed to link accounts: " + linkError.message);
+        }
+      } else {
+        console.error("Error signing in with Google", error);
         alert("Google Auth Error: " + error.message);
       }
     }
@@ -50,9 +64,23 @@ export function SignInModal() {
       const result = await signInWithPopup(auth, githubProvider);
       await syncUserProfile(result.user.uid, result.user.displayName, result.user.email);
       close();
-    } catch (error: unknown) {
-      console.error("Error signing in with GitHub", error);
-      if (error instanceof Error) {
+    } catch (error: any) {
+      if (error.code === "auth/account-exists-with-different-credential") {
+        const pendingCred = GithubAuthProvider.credentialFromError(error);
+        try {
+          // Silently trigger alternate sign-in to auto-link
+          const result = await signInWithPopup(auth, googleProvider);
+          if (pendingCred) {
+            await linkWithCredential(result.user, pendingCred);
+          }
+          await syncUserProfile(result.user.uid, result.user.displayName, result.user.email);
+          close();
+        } catch (linkError: any) {
+          console.error("Link error:", linkError);
+          alert("Failed to link accounts: " + linkError.message);
+        }
+      } else {
+        console.error("Error signing in with GitHub", error);
         alert("GitHub Auth Error: " + error.message);
       }
     }
