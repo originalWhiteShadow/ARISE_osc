@@ -5,7 +5,8 @@ import ImageCarousel from "@/components/ui/ImageCarousel";
 
 export const revalidate = 60; // Cache invalidation
 
-export default async function NewsArticlePage({ params }: { params: { slug: string } }) {
+export default async function NewsArticlePage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
   const documentId = process.env.NEXT_PUBLIC_GOOGLE_SHEET_ID;
   const gid = process.env.NEXT_PUBLIC_NEWSROOM_SHEET_GID || "0";
   
@@ -14,7 +15,7 @@ export default async function NewsArticlePage({ params }: { params: { slug: stri
   const newsItems = await fetchGoogleSheet(documentId, gid);
   
   // Find the exact news item matching the slug
-  const article = newsItems.find(item => generateSlug(item.Title || "") === params.slug);
+  const article = newsItems.find(item => generateSlug(item.Title || "") === slug);
 
   if (!article) {
     return (
