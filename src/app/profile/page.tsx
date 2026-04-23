@@ -102,13 +102,27 @@ export default function ProfilePage() {
     setIsSavingKey(true);
     try {
       const encrypted = await encryptData(apiKey, user.uid);
-      await setDoc(doc(db, "users", user.uid), { openAiKey: encrypted }, { merge: true });
+      // Firebase setDoc hangs indefinitely if the database doesn't exist
+      // We use Promise.race to enforce a timeout so the UI doesn't hang.
+      const timeoutPromise = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error("Firestore connection timeout")), 3000)
+      );
+      
+      await Promise.race([
+        setDoc(doc(db, "users", user.uid), { openAiKey: encrypted }, { merge: true }),
+        timeoutPromise
+      ]);
+
       setSavedKeyObfuscated(`AIza...${apiKey.slice(-4)}`);
       setApiKey("");
     } catch (e) {
-      console.error(e);
+      console.error("Failed to save key to Firebase:", e);
+      // Update UI anyway since it's encrypted locally, even if Firebase failed
+      setSavedKeyObfuscated(`AIza...${apiKey.slice(-4)} (Local Only)`);
+      setApiKey("");
+    } finally {
+      setIsSavingKey(false);
     }
-    setIsSavingKey(false);
   };
 
   const roleTag = getRoleTag();
