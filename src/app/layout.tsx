@@ -8,6 +8,7 @@ import { SignInModal } from "@/components/ui/SignInModal";
 import { GlobalHUD } from "@/components/ui/GlobalHUD";
 import { GlobalDecorations } from "@/components/ui/GlobalDecorations";
 import { SplashScreen } from "@/components/ui/SplashScreen";
+import { AiAssistant } from "@/components/ui/AiAssistant";
 import { Suspense } from "react";
 
 const geistSans = Geist({
@@ -48,6 +49,7 @@ export default function RootLayout({
           <Suspense fallback={null}>
             <SignInModal />
           </Suspense>
+          <AiAssistant />
           <GlobalHUD />
         </Providers>
       </body>
