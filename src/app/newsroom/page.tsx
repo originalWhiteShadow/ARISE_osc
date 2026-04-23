@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { ArrowLeft, Newspaper, Image as ImageIcon } from "lucide-react";
-import { fetchGoogleSheet, parseGoogleDriveImageLinks } from "@/lib/sheets/fetcher";
+import { ArrowLeft, Newspaper, ArrowRight } from "lucide-react";
+import { fetchGoogleSheet, parseGoogleDriveImageLinks, generateSlug } from "@/lib/sheets/fetcher";
+import ImageCarousel from "@/components/ui/ImageCarousel";
 
 export const revalidate = 60; // Cache invalidation
 
@@ -32,15 +33,18 @@ export default async function NewsroomPage() {
         <div className="flex flex-col gap-10 w-full max-w-4xl mb-12 relative z-10">
           {newsItems.map((item, idx) => {
             const images = parseGoogleDriveImageLinks(item.Images || item.ImageLinks || item.Image || item.Link || "");
+            const itemSlug = generateSlug(item.Title || "");
             
             return (
-              <div key={idx} className="apple-card glass-heavy p-8 flex flex-col transition-all duration-500 transform-gpu hover:shadow-2xl">
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+              <div key={idx} className="apple-card glass-heavy p-8 flex flex-col transition-all duration-500 transform-gpu hover:shadow-2xl group">
+                <Link href={`/newsroom/${itemSlug}`} className="absolute inset-0 z-0" aria-label="View Details"></Link>
+                
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 relative z-10 pointer-events-none">
                   <div className="flex items-center gap-3">
                      <div className="p-3 bg-apple-accent/10 rounded-xl text-apple-accent shrink-0">
                         <Newspaper className="w-6 h-6" />
                      </div>
-                     <h3 className="text-2xl font-bold">{item.Title || `Transmission ${idx + 1}`}</h3>
+                     <h3 className="text-2xl font-bold group-hover:text-apple-accent transition-colors">{item.Title || `Transmission ${idx + 1}`}</h3>
                   </div>
                   {item.Date && (
                     <span className="text-xs font-mono text-apple-text-muted tracking-widest px-3 py-1 bg-apple-border/20 rounded-md shrink-0">
@@ -49,41 +53,22 @@ export default async function NewsroomPage() {
                   )}
                 </div>
                 
-                {/* Horizontal Image Carousel */}
+                {/* Interactive Horizontal Image Carousel */}
                 {images.length > 0 && (
-                  <div className="w-full mb-6 rounded-xl overflow-hidden border border-apple-border/20">
-                    <div 
-                      className="flex overflow-x-auto snap-x snap-mandatory" 
-                      style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-                    >
-                      {/* Inner style wrapper for Chrome/Safari scrollbar hiding */}
-                      <style dangerouslySetInnerHTML={{__html: `::-webkit-scrollbar { display: none; }`}} />
-                      
-                      {images.map((imgObj, imgIdx) => (
-                        <div key={imgIdx} className="w-full flex-none snap-center relative aspect-video bg-black/5 flex items-center justify-center">
-                           <a href={imgObj.href} target="_blank" rel="noopener noreferrer" className="w-full h-full block">
-                             {/* eslint-disable-next-line @next/next/no-img-element */}
-                             <img 
-                               src={imgObj.src} 
-                               alt={`News media ${imgIdx + 1}`} 
-                               className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-                               loading="lazy"
-                             />
-                           </a>
-                        </div>
-                      ))}
-                    </div>
-                    {images.length > 1 && (
-                      <div className="w-full text-center py-2 bg-apple-border/10 text-xs font-mono text-apple-text-muted tracking-widest border-t border-apple-border/20">
-                         {images.length} ATTACHMENTS (SCROLL TO VIEW)
-                      </div>
-                    )}
+                  <div className="relative z-20 mb-6">
+                    <ImageCarousel images={images} autoScrollInterval={4000} />
                   </div>
                 )}
                 
-                <p className="text-apple-text-muted leading-relaxed whitespace-pre-wrap">
+                <p className="text-apple-text-muted leading-relaxed whitespace-pre-wrap line-clamp-3 relative z-10 pointer-events-none mb-6">
                   {item.Content || item.Description || "No detailed contents available."}
                 </p>
+
+                <div className="mt-auto flex justify-end relative z-10 pointer-events-none">
+                  <span className="flex items-center gap-2 text-sm font-mono tracking-widest text-apple-text-muted group-hover:text-apple-accent transition-colors">
+                    ACCESS LOG <ArrowRight className="w-4 h-4" />
+                  </span>
+                </div>
               </div>
             );
           })}

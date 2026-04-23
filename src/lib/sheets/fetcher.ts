@@ -119,3 +119,15 @@ export function parseGoogleDriveImageLinks(rawLinks: string): { id: string, src:
     return { id: url, src: url, href: url }; // fallback
   });
 }
+
+/**
+ * Converts a string into a URL-safe slug.
+ * Useful for dynamic routing based on Google Sheet titles.
+ */
+export function generateSlug(title: string): string {
+  if (!title) return "article";
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-') // Replace non-alphanumeric chars with hyphens
+    .replace(/(^-|-$)+/g, '');   // Remove leading/trailing hyphens
+}
