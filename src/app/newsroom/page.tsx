@@ -36,7 +36,7 @@ export default async function NewsroomPage() {
             const itemSlug = generateSlug(item.Title || "");
             
             return (
-              <div key={idx} className="apple-card glass-heavy p-8 flex flex-col transition-all duration-500 transform-gpu hover:shadow-2xl group">
+              <div key={idx} className="relative apple-card glass-heavy p-8 flex flex-col transition-all duration-500 transform-gpu hover:shadow-2xl group">
                 <Link href={`/newsroom/${itemSlug}`} className="absolute inset-0 z-0" aria-label="View Details"></Link>
                 
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 relative z-10 pointer-events-none">
