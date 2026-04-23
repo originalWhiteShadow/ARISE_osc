@@ -7,11 +7,12 @@ export const revalidate = 60; // Cache invalidation
 export default async function ProjectsPage() {
   const documentId = process.env.NEXT_PUBLIC_GOOGLE_SHEET_ID;
   const gid = process.env.NEXT_PUBLIC_PROJECTS_SHEET_GID || "0"; // Tab ID
-  
+
   let projects = [];
   if (documentId) {
     projects = await fetchGoogleSheet(documentId, gid);
   }
+
 
   return (
     <div className="w-full min-h-[80vh] flex flex-col items-center justify-center bg-apple-bg text-apple-text transition-colors duration-300 px-6 pt-24 pb-12">
@@ -19,7 +20,7 @@ export default async function ProjectsPage() {
       <p className="text-xl text-apple-text-muted mb-10 max-w-2xl text-center">
         Active open-source projects synchronized natively from our database.
       </p>
-      
+
       {!documentId ? (
         <div className="p-6 border border-yellow-500/30 bg-yellow-500/10 text-yellow-500 rounded-xl mb-12">
           Configuration Error: Google Sheet ID not set. Please add NEXT_PUBLIC_GOOGLE_SHEET_ID to .env.local
@@ -36,17 +37,17 @@ export default async function ProjectsPage() {
               <p className="text-apple-text-muted text-sm mb-6 flex-grow">
                 {project.Description || "No description provided."}
               </p>
-              
+
               {project.Status && (
                 <div className="mb-6 text-xs font-mono px-3 py-1.5 bg-apple-border/20 rounded-md text-apple-text tracking-widest">
                   STATUS: {project.Status}
                 </div>
               )}
-              
+
               {project.Link ? (
-                <a 
-                  href={project.Link} 
-                  target="_blank" 
+                <a
+                  href={project.Link}
+                  target="_blank"
                   rel="noopener noreferrer"
                   className="px-5 py-2.5 bg-apple-text text-apple-bg rounded-full text-sm font-medium hover:opacity-80 transition-opacity flex items-center gap-2"
                 >
