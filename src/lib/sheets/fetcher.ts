@@ -92,10 +92,11 @@ function parseCSVLine(line: string): string[] {
 }
 
 /**
- * Extracts a Google Drive File ID from a public link and converts it to a raw image URL.
- * Supports standard share links and raw IDs.
+ * Extracts a Google Drive File ID from a public link and converts it to safe image URLs.
+ * Returns an object with 'src' (for the img tag using thumbnail API to bypass CORS/restrictions) 
+ * and 'href' (for the a tag to view the full resolution image).
  */
-export function parseGoogleDriveImageLinks(rawLinks: string): string[] {
+export function parseGoogleDriveImageLinks(rawLinks: string): { id: string, src: string, href: string }[] {
   if (!rawLinks) return [];
   
   // Split by comma in case the user pastes multiple links
@@ -109,8 +110,12 @@ export function parseGoogleDriveImageLinks(rawLinks: string): string[] {
     const finalId = fileId || (url.length > 15 && !url.includes('/') ? url : null);
     
     if (finalId) {
-      return `https://drive.google.com/uc?export=view&id=${finalId}`;
+      return {
+        id: finalId,
+        src: `https://drive.google.com/thumbnail?id=${finalId}&sz=w1000`,
+        href: `https://drive.google.com/uc?export=view&id=${finalId}`
+      };
     }
-    return url; // fallback to raw string if parsing fails
+    return { id: url, src: url, href: url }; // fallback
   });
 }

@@ -59,12 +59,12 @@ export default async function NewsroomPage() {
                       {/* Inner style wrapper for Chrome/Safari scrollbar hiding */}
                       <style dangerouslySetInnerHTML={{__html: `::-webkit-scrollbar { display: none; }`}} />
                       
-                      {images.map((imgUrl, imgIdx) => (
+                      {images.map((imgObj, imgIdx) => (
                         <div key={imgIdx} className="w-full flex-none snap-center relative aspect-video bg-black/5 flex items-center justify-center">
-                           <a href={imgUrl} target="_blank" rel="noopener noreferrer" className="w-full h-full block">
+                           <a href={imgObj.href} target="_blank" rel="noopener noreferrer" className="w-full h-full block">
                              {/* eslint-disable-next-line @next/next/no-img-element */}
                              <img 
-                               src={imgUrl} 
+                               src={imgObj.src} 
                                alt={`News media ${imgIdx + 1}`} 
                                className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                                loading="lazy"
