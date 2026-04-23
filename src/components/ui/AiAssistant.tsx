@@ -62,21 +62,26 @@ export function AiAssistant() {
     setIsTyping(true);
 
     try {
-      const geminiMessages = messages.map(m => ({
+      const geminiMessages = [
+        { role: 'user', parts: [{ text: "SYSTEM INSTRUCTION: You are the ARISE Core AI, an advanced tech-focused assistant for the ARISE Open Source Community. Keep responses extremely concise, intelligent, and formatted cleanly. You assist college students and engineers in building tech projects. Do you understand?" }] },
+        { role: 'model', parts: [{ text: "I understand. I am the ARISE Core AI. I will assist you with precision." }] }
+      ];
+
+      // Add all messages except the first default greeting to strictly alternate
+      const userHistory = messages.slice(1).map(m => ({
         role: m.role === 'assistant' ? 'model' : 'user',
         parts: [{ text: m.content }]
       }));
+      
+      geminiMessages.push(...userHistory);
       geminiMessages.push({ role: 'user', parts: [{ text: userMsg }] });
 
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`, {
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          systemInstruction: {
-            parts: [{ text: "You are the ARISE Core AI, an advanced tech-focused assistant for the ARISE Open Source Community. Keep responses extremely concise, intelligent, and formatted cleanly. You assist college students and engineers in building tech projects." }]
-          },
           contents: geminiMessages
         })
       });
