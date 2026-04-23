@@ -92,16 +92,22 @@ export function GlobalDecorations() {
         <div className="absolute w-4 h-4 rounded-full bg-apple-text/40 z-20" />
         
         {/* Arm 1 */}
-        <div className="absolute top-0 w-12 h-16 border-[1.5px] border-apple-text/40 dark:border-apple-text/20 bg-apple-text/5 dark:bg-apple-bg/10 rounded-t-full flex items-start justify-center pt-2">
-           <div className="w-6 h-6 rounded-full border border-apple-text/20 dark:border-apple-text/10"></div>
+        <div className="absolute inset-0 rotate-0">
+          <div className="absolute top-4 left-1/2 -translate-x-1/2 w-12 h-20 border-[1.5px] border-apple-text/40 dark:border-apple-text/20 bg-apple-text/5 dark:bg-apple-bg/10 rounded-t-full flex items-start justify-center pt-2">
+             <div className="w-6 h-6 rounded-full border border-apple-text/20 dark:border-apple-text/10"></div>
+          </div>
         </div>
         {/* Arm 2 */}
-        <div className="absolute bottom-2 right-1 w-12 h-16 border-[1.5px] border-apple-text/40 dark:border-apple-text/20 bg-apple-text/5 dark:bg-apple-bg/10 rounded-t-full flex items-start justify-center pt-2 origin-top rotate-[120deg]">
-           <div className="w-6 h-6 rounded-full border border-apple-text/20 dark:border-apple-text/10"></div>
+        <div className="absolute inset-0 rotate-[120deg]">
+          <div className="absolute top-4 left-1/2 -translate-x-1/2 w-12 h-20 border-[1.5px] border-apple-text/40 dark:border-apple-text/20 bg-apple-text/5 dark:bg-apple-bg/10 rounded-t-full flex items-start justify-center pt-2">
+             <div className="w-6 h-6 rounded-full border border-apple-text/20 dark:border-apple-text/10"></div>
+          </div>
         </div>
         {/* Arm 3 */}
-        <div className="absolute bottom-2 left-1 w-12 h-16 border-[1.5px] border-apple-text/40 dark:border-apple-text/20 bg-apple-text/5 dark:bg-apple-bg/10 rounded-t-full flex items-start justify-center pt-2 origin-top -rotate-[120deg]">
-           <div className="w-6 h-6 rounded-full border border-apple-text/20 dark:border-apple-text/10"></div>
+        <div className="absolute inset-0 rotate-[240deg]">
+          <div className="absolute top-4 left-1/2 -translate-x-1/2 w-12 h-20 border-[1.5px] border-apple-text/40 dark:border-apple-text/20 bg-apple-text/5 dark:bg-apple-bg/10 rounded-t-full flex items-start justify-center pt-2">
+             <div className="w-6 h-6 rounded-full border border-apple-text/20 dark:border-apple-text/10"></div>
+          </div>
         </div>
       </motion.div>
     </>
