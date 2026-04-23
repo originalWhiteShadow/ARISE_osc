@@ -116,8 +116,8 @@ export default function ProfilePage() {
       setSavedKeyObfuscated(`AIza...${apiKey.slice(-4)}`);
       setApiKey("");
     } catch (e) {
-      console.error("Failed to save key to Firebase:", e);
       // Update UI anyway since it's encrypted locally, even if Firebase failed
+      // (Silently catch the expected timeout error so the console stays clean)
       setSavedKeyObfuscated(`AIza...${apiKey.slice(-4)} (Local Only)`);
       setApiKey("");
     } finally {
