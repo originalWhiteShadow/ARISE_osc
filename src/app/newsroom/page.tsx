@@ -56,7 +56,7 @@ export default async function NewsroomPage() {
                 {/* Interactive Horizontal Image Carousel */}
                 {images.length > 0 && (
                   <div className="relative z-20 mb-6">
-                    <ImageCarousel images={images} autoScrollInterval={4000} />
+                    <ImageCarousel images={images} autoScrollInterval={4000} baseHref={`/newsroom/${itemSlug}`} />
                   </div>
                 )}
                 

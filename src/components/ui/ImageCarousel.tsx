@@ -12,9 +12,10 @@ interface ImageObj {
 interface ImageCarouselProps {
   images: ImageObj[];
   autoScrollInterval?: number; // ms, defaults to 4000
+  baseHref?: string; // If provided, clicking the image navigates to this URL instead of opening the raw image
 }
 
-export default function ImageCarousel({ images, autoScrollInterval = 4000 }: ImageCarouselProps) {
+export default function ImageCarousel({ images, autoScrollInterval = 4000, baseHref }: ImageCarouselProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -99,30 +100,35 @@ export default function ImageCarousel({ images, autoScrollInterval = 4000 }: Ima
       <div 
         ref={scrollRef}
         onScroll={handleScroll}
-        className="flex overflow-x-auto snap-x snap-mandatory" 
+        className="flex overflow-x-auto overflow-y-hidden touch-pan-x snap-x snap-mandatory" 
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
         <style dangerouslySetInnerHTML={{__html: `::-webkit-scrollbar { display: none; }`}} />
         
-        {images.map((imgObj, imgIdx) => (
-          <div key={imgIdx} className="w-full flex-none snap-center relative aspect-video bg-black/5 flex items-center justify-center">
-            <a 
-              href={imgObj.href} 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="w-full h-full block"
-              onClick={(e) => e.stopPropagation()} // Let image open in new tab without triggering parent
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img 
-                src={imgObj.src} 
-                alt={`News media ${imgIdx + 1}`} 
-                className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-                loading="lazy"
-              />
-            </a>
-          </div>
-        ))}
+        {images.map((imgObj, imgIdx) => {
+          // If baseHref is provided, navigate to that page. Otherwise, open full image in new tab.
+          const targetUrl = baseHref || imgObj.href;
+          const targetAttr = baseHref ? "_self" : "_blank";
+          
+          return (
+            <div key={imgIdx} className="w-full flex-none snap-center relative aspect-video bg-black/5 flex items-center justify-center">
+              <a 
+                href={targetUrl} 
+                target={targetAttr} 
+                rel="noopener noreferrer" 
+                className="w-full h-full block"
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img 
+                  src={imgObj.src} 
+                  alt={`News media ${imgIdx + 1}`} 
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                  loading="lazy"
+                />
+              </a>
+            </div>
+          );
+        })}
       </div>
 
       {/* Navigation Arrows */}
