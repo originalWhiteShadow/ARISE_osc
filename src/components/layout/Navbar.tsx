@@ -13,32 +13,6 @@ import { auth } from '@/lib/firebase/config';
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { user, loading } = useAuth();
-  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
-
-  useEffect(() => {
-    const handleBeforeInstallPrompt = (e: any) => {
-      e.preventDefault();
-      setDeferredPrompt(e);
-    };
-
-    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-
-    return () => {
-      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-    };
-  }, []);
-
-  const handleInstallClick = async () => {
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
-      if (outcome === 'accepted') {
-        setDeferredPrompt(null);
-      }
-    } else {
-      alert("App is already installed, or your browser does not support automatic installation.\n\nTo install manually:\n• Chrome/Edge: Click the 3 dots menu -> 'Install App'\n• Safari (iOS): Tap the Share button -> 'Add to Home Screen'");
-    }
-  };
 
   return (
     <>
@@ -62,6 +36,7 @@ export default function Navbar() {
             <Link href="/projects" className="hover:text-apple-text hover:-translate-y-0.5 transition-all">Projects</Link>
             <Link href="/newsroom" className="hover:text-apple-text hover:-translate-y-0.5 transition-all">Newsroom</Link>
             <Link href="/learn" className="hover:text-apple-text hover:-translate-y-0.5 transition-all">Knowledge</Link>
+            <Link href="/#organizations" className="hover:text-apple-text hover:-translate-y-0.5 transition-all">Organizations</Link>
             <Link href="/about" className="hover:text-apple-text hover:-translate-y-0.5 transition-all">About</Link>
           </nav>
           
@@ -88,12 +63,6 @@ export default function Navbar() {
                     )}
                   </div>
                 </Link>
-                <button 
-                  onClick={() => signOut(auth)}
-                  className="px-4 py-1.5 text-[12px] font-mono uppercase tracking-widest rounded-none border border-apple-text text-apple-text hover:bg-apple-text hover:text-apple-bg transition-colors"
-                >
-                  End_Sys
-                </button>
               </div>
             ) : (
               <Link 
@@ -154,28 +123,11 @@ export default function Navbar() {
               <Link href="/projects" onClick={() => setMobileMenuOpen(false)} className="hover:text-apple-accent transition-colors">Projects</Link>
               <Link href="/newsroom" onClick={() => setMobileMenuOpen(false)} className="hover:text-apple-accent transition-colors">Newsroom</Link>
               <Link href="/learn" onClick={() => setMobileMenuOpen(false)} className="hover:text-apple-accent transition-colors">Knowledge</Link>
+              <Link href="/#organizations" onClick={() => setMobileMenuOpen(false)} className="hover:text-apple-accent transition-colors">Organizations</Link>
               <Link href="/about" onClick={() => setMobileMenuOpen(false)} className="hover:text-apple-accent transition-colors">About</Link>
               
-              <button 
-                onClick={() => {
-                  handleInstallClick();
-                  setMobileMenuOpen(false);
-                }} 
-                className="mt-4 hover:text-apple-accent transition-colors flex items-center gap-2 text-apple-accent"
-              >
-                <Download className="w-5 h-5" />
-                Install_App
-              </button>
-              
               <div className="mt-8 pt-8 border-t border-apple-border/50 flex w-48 justify-center">
-                {!loading && user ? (
-                  <button 
-                    onClick={() => { signOut(auth); setMobileMenuOpen(false); }}
-                    className="px-6 py-3 border border-apple-text hover:bg-apple-text hover:text-apple-bg transition-colors"
-                  >
-                    End_Sys
-                  </button>
-                ) : (
+                {!loading && !user && (
                   <Link 
                     href="?login=true" 
                     onClick={() => setMobileMenuOpen(false)}

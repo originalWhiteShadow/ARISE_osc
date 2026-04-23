@@ -1,9 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, LayoutDashboard, Terminal, CheckCircle2, CircleDashed, Download } from "lucide-react";
+import { ArrowRight, LayoutDashboard, Terminal, CheckCircle2, CircleDashed, Users, Code, Cpu, Rocket } from "lucide-react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useState, useEffect } from "react";
 
 export default function Home() {
   const { scrollYProgress } = useScroll();
@@ -17,32 +16,12 @@ export default function Home() {
   const boxMorphRadius = useTransform(scrollYProgress, [0.2, 0.8], ["12px", "150px"]);
   const boxRotate = useTransform(scrollYProgress, [0.2, 0.8], [0, 15]);
 
-  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
-
-  useEffect(() => {
-    const handleBeforeInstallPrompt = (e: any) => {
-      e.preventDefault();
-      setDeferredPrompt(e);
-    };
-
-    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-
-    return () => {
-      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-    };
-  }, []);
-
-  const handleInstallClick = async () => {
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
-      if (outcome === 'accepted') {
-        setDeferredPrompt(null);
-      }
-    } else {
-      alert("App is already installed, or your browser does not support automatic installation.\n\nTo install manually:\n• Chrome/Edge: Click the 3 dots menu -> 'Install App'\n• Safari (iOS): Tap the Share button -> 'Add to Home Screen'");
-    }
-  };
+  const organizations = [
+    { name: "Google Developer Student Clubs", acronym: "GDSC", icon: Code, desc: "Building solutions for local businesses and communities." },
+    { name: "Open Source Cell", acronym: "OSC", icon: Terminal, desc: "Fostering open-source contributions and development." },
+    { name: "IEEE Computer Society", acronym: "IEEE CS", icon: Cpu, desc: "Advancing technology for the benefit of humanity." },
+    { name: "Aerospace & Robotics", acronym: "ARC", icon: Rocket, desc: "Exploring the frontiers of automation and space tech." }
+  ];
 
   return (
     <div className="flex flex-col items-center w-full pb-24 transition-colors duration-300 relative overflow-hidden">
@@ -184,21 +163,33 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Download Section */}
-      <section className="w-full max-w-7xl px-6 mt-12 relative z-10">
-        <div className="w-full apple-card glass-heavy p-10 md:p-14 flex flex-col md:flex-row items-center justify-between transition-colors duration-300">
-          <div className="mb-8 md:mb-0 text-center md:text-left">
-            <h3 className="text-[28px] font-semibold text-apple-text mb-3">Install System App</h3>
-            <p className="text-[17px] text-apple-text-muted font-medium">Deploy ARISE directly to your device for offline access and native performance.</p>
-          </div>
-          
-          <button 
-            onClick={handleInstallClick}
-            className="px-8 py-4 rounded-full font-mono tracking-widest text-sm flex items-center justify-center gap-3 transition-all duration-300 bg-apple-text text-apple-bg hover:opacity-80"
-          >
-            <Download className="w-5 h-5" />
-            INSTALL APP
-          </button>
+      {/* Organizations Section */}
+      <section id="organizations" className="w-full max-w-7xl px-6 mt-24 relative z-10 pt-12">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-apple-text mb-4">Technical Organizations</h2>
+          <p className="text-lg text-apple-text-muted font-medium max-w-2xl mx-auto">
+            Discover and collaborate with premier student-led technical communities and engineering cells.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {organizations.map((org, idx) => (
+            <div 
+              key={idx} 
+              className="apple-card glass-heavy p-8 flex flex-col items-center text-center transition-all duration-500 transform-gpu hover:-translate-y-2 hover:shadow-2xl group"
+            >
+              <div className="w-16 h-16 rounded-2xl bg-apple-border/20 border border-apple-border flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-apple-accent/10 transition-all duration-300">
+                <org.icon className="w-8 h-8 text-apple-text-muted group-hover:text-apple-accent transition-colors" />
+              </div>
+              <h4 className="text-xl font-bold text-apple-text mb-2 group-hover:text-apple-accent transition-colors">{org.name}</h4>
+              <div className="text-xs font-mono tracking-widest text-apple-text-muted/60 mb-4 px-3 py-1 bg-apple-bg rounded-full border border-apple-border/50">
+                {org.acronym}
+              </div>
+              <p className="text-sm text-apple-text-muted leading-relaxed">
+                {org.desc}
+              </p>
+            </div>
+          ))}
         </div>
       </section>
     </div>
