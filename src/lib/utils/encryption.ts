@@ -55,19 +55,16 @@ function base64ToBuffer(base64: string): ArrayBuffer {
 export async function encryptData(text: string, uid: string): Promise<string> {
   if (!text) return "";
   try {
+    if (!window.crypto || !window.crypto.subtle) {
+      console.warn("Web Crypto API not available. Using fallback obfuscation.");
+      return btoa(uid + ":" + text);
+    }
     const key = await getKeyFromUID(uid);
     const enc = new TextEncoder();
-    
-    // Static IV for deterministic encryption so we don't have to store it separately.
-    // In a highly secure environment, IVs should be random, but since we are just 
-    // obfuscating at-rest API keys with a user-specific secret, this is acceptable.
     const iv = new TextEncoder().encode("arise-static-iv-12"); 
 
     const encrypted = await crypto.subtle.encrypt(
-      {
-        name: "AES-GCM",
-        iv: iv,
-      },
+      { name: "AES-GCM", iv: iv },
       key,
       enc.encode(text)
     );
@@ -75,22 +72,27 @@ export async function encryptData(text: string, uid: string): Promise<string> {
     return bufferToBase64(encrypted);
   } catch (error) {
     console.error("Encryption failed:", error);
-    return "";
+    // Fallback on error
+    return btoa(uid + ":" + text);
   }
 }
 
 export async function decryptData(encryptedBase64: string, uid: string): Promise<string> {
   if (!encryptedBase64) return "";
   try {
+    if (!window.crypto || !window.crypto.subtle) {
+      const decoded = atob(encryptedBase64);
+      if (decoded.startsWith(uid + ":")) {
+        return decoded.substring(uid.length + 1);
+      }
+      return "";
+    }
     const key = await getKeyFromUID(uid);
     const encryptedBuffer = base64ToBuffer(encryptedBase64);
     const iv = new TextEncoder().encode("arise-static-iv-12");
 
     const decrypted = await crypto.subtle.decrypt(
-      {
-        name: "AES-GCM",
-        iv: iv,
-      },
+      { name: "AES-GCM", iv: iv },
       key,
       encryptedBuffer
     );
@@ -99,6 +101,12 @@ export async function decryptData(encryptedBase64: string, uid: string): Promise
     return dec.decode(decrypted);
   } catch (error) {
     console.error("Decryption failed:", error);
+    try {
+      const decoded = atob(encryptedBase64);
+      if (decoded.startsWith(uid + ":")) {
+        return decoded.substring(uid.length + 1);
+      }
+    } catch(e) {}
     return "";
   }
 }
