@@ -33,15 +33,27 @@ export default function ProfilePage() {
   const [showAvatarModal, setShowAvatarModal] = useState(false);
   const [apiKey, setApiKey] = useState("");
   const [isSavingKey, setIsSavingKey] = useState(false);
+  const [isEditingKey, setIsEditingKey] = useState(false);
   const [savedKeyObfuscated, setSavedKeyObfuscated] = useState("");
 
   useEffect(() => {
     if (user?.uid) {
+      // 1. Instant load from local storage
+      const localKey = localStorage.getItem(`arise_ai_key_${user.uid}`);
+      if (localKey) {
+        decryptData(localKey, user.uid).then(dec => {
+          if (dec) setSavedKeyObfuscated(`AIza...${dec.slice(-4)}`);
+        });
+      }
+
+      // 2. Sync from Firestore
       getDoc(doc(db, "users", user.uid)).then(async (snap) => {
         if (snap.exists()) {
           setRole(snap.data().role);
           const encryptedKey = snap.data().openAiKey;
           if (encryptedKey) {
+            // Persist to local storage for faster future loads
+            localStorage.setItem(`arise_ai_key_${user.uid}`, encryptedKey);
             const decrypted = await decryptData(encryptedKey, user.uid);
             if (decrypted) {
               setSavedKeyObfuscated(`AIza...${decrypted.slice(-4)}`);
@@ -102,8 +114,11 @@ export default function ProfilePage() {
     setIsSavingKey(true);
     try {
       const encrypted = await encryptData(apiKey, user.uid);
+      
+      // Save to localStorage immediately for instant persistence
+      localStorage.setItem(`arise_ai_key_${user.uid}`, encrypted);
+
       // Firebase setDoc hangs indefinitely if the database doesn't exist
-      // We use Promise.race to enforce a timeout so the UI doesn't hang.
       const timeoutPromise = new Promise((_, reject) => 
         setTimeout(() => reject(new Error("Firestore connection timeout")), 3000)
       );
@@ -111,15 +126,15 @@ export default function ProfilePage() {
       await Promise.race([
         setDoc(doc(db, "users", user.uid), { openAiKey: encrypted }, { merge: true }),
         timeoutPromise
-      ]);
+      ]).catch(() => {}); // Silently handle timeout
 
       setSavedKeyObfuscated(`AIza...${apiKey.slice(-4)}`);
       setApiKey("");
+      setIsEditingKey(false);
     } catch (e) {
-      // Update UI anyway since it's encrypted locally, even if Firebase failed
-      // (Silently catch the expected timeout error so the console stays clean)
-      setSavedKeyObfuscated(`AIza...${apiKey.slice(-4)} (Local Only)`);
+      setSavedKeyObfuscated(`AIza...${apiKey.slice(-4)}`);
       setApiKey("");
+      setIsEditingKey(false);
     } finally {
       setIsSavingKey(false);
     }
@@ -262,28 +277,49 @@ export default function ProfilePage() {
           </p>
           
           <div className="w-full flex flex-col gap-3">
-            {savedKeyObfuscated && (
-              <div className="flex items-center justify-between px-3 py-2 bg-green-500/10 border border-green-500/20 text-green-500 text-xs font-mono rounded-md mb-2">
-                <div className="flex items-center gap-2">
-                  <Check className="w-3.5 h-3.5" /> Key Connected
+            {savedKeyObfuscated && !isEditingKey ? (
+              <div className="flex flex-col gap-4">
+                <div className="flex items-center justify-between px-3 py-3 bg-green-500/10 border border-green-500/20 text-green-500 text-xs font-mono rounded-md">
+                  <div className="flex items-center gap-2">
+                    <Check className="w-3.5 h-3.5" /> Key Connected
+                  </div>
+                  <span>{savedKeyObfuscated}</span>
                 </div>
-                <span>{savedKeyObfuscated}</span>
+                <button 
+                  onClick={() => setIsEditingKey(true)}
+                  className="w-full py-2.5 border border-apple-border/50 text-apple-text text-xs font-mono uppercase tracking-widest rounded-md hover:bg-apple-border/10 transition-colors flex items-center justify-center gap-2"
+                >
+                  <Edit2 className="w-3.5 h-3.5" /> Edit_Key
+                </button>
               </div>
+            ) : (
+              <>
+                <div className="relative">
+                  <input 
+                    type="password"
+                    placeholder="AIza..."
+                    value={apiKey}
+                    onChange={(e) => setApiKey(e.target.value)}
+                    className="w-full bg-apple-border/10 border border-apple-border/30 rounded-md px-4 py-2.5 text-sm text-apple-text focus:outline-none focus:border-apple-accent focus:bg-apple-border/20 transition-all font-mono"
+                  />
+                  {isEditingKey && (
+                    <button 
+                      onClick={() => setIsEditingKey(false)}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 text-apple-text-muted hover:text-apple-text transition-colors"
+                    >
+                      <XIcon className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
+                <button 
+                  onClick={handleSaveApiKey}
+                  disabled={isSavingKey || !apiKey}
+                  className="w-full py-2.5 bg-apple-text text-apple-bg rounded-md text-sm font-semibold disabled:opacity-50 transition-opacity flex items-center justify-center gap-2 shadow-lg"
+                >
+                  {isSavingKey ? "Encrypting..." : <><Key className="w-4 h-4" /> Save Encrypted Key</>}
+                </button>
+              </>
             )}
-            <input 
-              type="password"
-              placeholder="AIza..."
-              value={apiKey}
-              onChange={(e) => setApiKey(e.target.value)}
-              className="w-full bg-apple-border/10 border border-apple-border/30 rounded-md px-4 py-2.5 text-sm text-apple-text focus:outline-none focus:border-apple-accent focus:bg-apple-border/20 transition-all font-mono"
-            />
-            <button 
-              onClick={handleSaveApiKey}
-              disabled={isSavingKey || !apiKey}
-              className="w-full py-2.5 bg-apple-text text-apple-bg rounded-md text-sm font-semibold disabled:opacity-50 transition-opacity flex items-center justify-center gap-2"
-            >
-              {isSavingKey ? "Encrypting..." : <><Key className="w-4 h-4" /> Save Encrypted Key</>}
-            </button>
           </div>
         </div>
 
