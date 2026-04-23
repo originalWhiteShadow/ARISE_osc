@@ -20,7 +20,7 @@ export default async function NewsArticlePage({ params }: { params: Promise<{ sl
   if (!article) {
     return (
       <div className="w-full min-h-[80vh] flex flex-col items-center justify-center bg-apple-bg text-apple-text px-6 pt-24 pb-12">
-        <h1 className="text-2xl font-mono tracking-widest mb-4">404 : TRANSMISSION_NOT_FOUND</h1>
+        <h1 className="text-2xl font-mono tracking-widest mb-4">404 : NEWS NOT FOUND</h1>
         <Link href="/newsroom" className="text-apple-accent hover:underline flex items-center gap-2">
           <ArrowLeft className="w-4 h-4" /> Return to Newsroom
         </Link>
@@ -35,13 +35,13 @@ export default async function NewsArticlePage({ params }: { params: Promise<{ sl
       
       <div className="w-full max-w-4xl flex items-center mb-8 relative z-20">
         <Link href="/newsroom" className="flex items-center gap-2 text-apple-text-muted hover:text-apple-accent transition-colors font-mono uppercase tracking-widest text-sm">
-          <ArrowLeft className="w-4 h-4" /> Back to Log
+          <ArrowLeft className="w-4 h-4" /> Back to Newsroom
         </Link>
       </div>
 
       <article className="w-full max-w-4xl apple-card glass-heavy p-6 md:p-12 flex flex-col relative z-10">
         <header className="mb-10 border-b border-apple-border/30 pb-10">
-          <h1 className="text-3xl md:text-5xl font-bold tracking-tight mb-6">{article.Title || "Untitled Transmission"}</h1>
+          <h1 className="text-3xl md:text-5xl font-bold tracking-tight mb-6">{article.Title || "Untitled News"}</h1>
           
           <div className="flex flex-wrap items-center gap-4 text-apple-text-muted font-mono text-sm">
             {article.Date && (
@@ -50,7 +50,7 @@ export default async function NewsArticlePage({ params }: { params: Promise<{ sl
               </span>
             )}
             <span className="flex items-center gap-2 px-3 py-1.5 bg-apple-border/10 rounded-full border border-apple-border/20">
-              <FileText className="w-4 h-4" /> SECURE_RECORD
+              <FileText className="w-4 h-4" /> News Article
             </span>
           </div>
         </header>
@@ -62,7 +62,7 @@ export default async function NewsArticlePage({ params }: { params: Promise<{ sl
         )}
 
         <div className="prose prose-invert max-w-none text-apple-text-muted leading-loose text-[17px] md:text-[19px] whitespace-pre-wrap font-medium">
-          {article.Content || article.Description || "No detailed contents available for this transmission."}
+          {article.Content || article.Description || "No detailed contents available for this news item."}
         </div>
       </article>
       

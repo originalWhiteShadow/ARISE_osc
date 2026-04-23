@@ -18,7 +18,7 @@ export default async function NewsroomPage() {
     <div className="w-full min-h-[80vh] flex flex-col items-center justify-center bg-apple-bg text-apple-text transition-colors duration-300 px-6 pt-24 pb-12">
       <h1 className="hero-title text-center mb-6">Newsroom</h1>
       <p className="text-xl text-apple-text-muted mb-10 max-w-2xl text-center">
-        Latest updates, technological advancements, and community transmissions.
+        Latest updates, technological advancements, and community announcements.
       </p>
       
       {!documentId ? (
@@ -27,7 +27,7 @@ export default async function NewsroomPage() {
         </div>
       ) : newsItems.length === 0 ? (
         <div className="p-6 text-apple-text-muted mb-12 font-mono tracking-widest text-sm">
-          [ No transmissions received ]
+          [ No news available ]
         </div>
       ) : (
         <div className="flex flex-col gap-10 w-full max-w-4xl mb-12 relative z-10">
@@ -44,7 +44,7 @@ export default async function NewsroomPage() {
                      <div className="p-3 bg-apple-accent/10 rounded-xl text-apple-accent shrink-0">
                         <Newspaper className="w-6 h-6" />
                      </div>
-                     <h3 className="text-2xl font-bold group-hover:text-apple-accent transition-colors">{item.Title || `Transmission ${idx + 1}`}</h3>
+                     <h3 className="text-2xl font-bold group-hover:text-apple-accent transition-colors">{item.Title || `News ${idx + 1}`}</h3>
                   </div>
                   {item.Date && (
                     <span className="text-xs font-mono text-apple-text-muted tracking-widest px-3 py-1 bg-apple-border/20 rounded-md shrink-0">
@@ -66,7 +66,7 @@ export default async function NewsroomPage() {
 
                 <div className="mt-auto flex justify-end relative z-10 pointer-events-none">
                   <span className="flex items-center gap-2 text-sm font-mono tracking-widest text-apple-text-muted group-hover:text-apple-accent transition-colors">
-                    ACCESS LOG <ArrowRight className="w-4 h-4" />
+                    VIEW DETAILS <ArrowRight className="w-4 h-4" />
                   </span>
                 </div>
               </div>

@@ -62,7 +62,7 @@ export default function Navbar() {
             <Link href="/projects" className="hover:text-apple-text hover:-translate-y-0.5 transition-all">Projects</Link>
             <Link href="/newsroom" className="hover:text-apple-text hover:-translate-y-0.5 transition-all">Newsroom</Link>
             <Link href="/learn" className="hover:text-apple-text hover:-translate-y-0.5 transition-all">Knowledge</Link>
-            <Link href="/about" className="hover:text-apple-text hover:-translate-y-0.5 transition-all">Sys_About</Link>
+            <Link href="/about" className="hover:text-apple-text hover:-translate-y-0.5 transition-all">About</Link>
           </nav>
           
           <div className="hidden md:flex items-center gap-4">
@@ -151,10 +151,10 @@ export default function Navbar() {
             className="fixed inset-0 z-[60] bg-apple-bg/95 backdrop-blur-xl flex flex-col items-center justify-center pt-20"
           >
             <nav className="flex flex-col items-center gap-8 text-xl font-mono uppercase tracking-[0.2em] text-apple-text">
-              <Link href="/projects" onClick={() => setMobileMenuOpen(false)} className="hover:text-apple-accent transition-colors">Projects_DB</Link>
-              <Link href="/newsroom" onClick={() => setMobileMenuOpen(false)} className="hover:text-apple-accent transition-colors">Transmission_Log</Link>
-              <Link href="/learn" onClick={() => setMobileMenuOpen(false)} className="hover:text-apple-accent transition-colors">Neural_Net</Link>
-              <Link href="/about" onClick={() => setMobileMenuOpen(false)} className="hover:text-apple-accent transition-colors">Core_Sys</Link>
+              <Link href="/projects" onClick={() => setMobileMenuOpen(false)} className="hover:text-apple-accent transition-colors">Projects</Link>
+              <Link href="/newsroom" onClick={() => setMobileMenuOpen(false)} className="hover:text-apple-accent transition-colors">Newsroom</Link>
+              <Link href="/learn" onClick={() => setMobileMenuOpen(false)} className="hover:text-apple-accent transition-colors">Knowledge</Link>
+              <Link href="/about" onClick={() => setMobileMenuOpen(false)} className="hover:text-apple-accent transition-colors">About</Link>
               
               <button 
                 onClick={() => {
