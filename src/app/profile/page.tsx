@@ -44,7 +44,7 @@ export default function ProfilePage() {
           if (encryptedKey) {
             const decrypted = await decryptData(encryptedKey, user.uid);
             if (decrypted) {
-              setSavedKeyObfuscated(`sk-...${decrypted.slice(-4)}`);
+              setSavedKeyObfuscated(`AIza...${decrypted.slice(-4)}`);
             }
           }
         }
@@ -103,7 +103,7 @@ export default function ProfilePage() {
     try {
       const encrypted = await encryptData(apiKey, user.uid);
       await setDoc(doc(db, "users", user.uid), { openAiKey: encrypted }, { merge: true });
-      setSavedKeyObfuscated(`sk-...${apiKey.slice(-4)}`);
+      setSavedKeyObfuscated(`AIza...${apiKey.slice(-4)}`);
       setApiKey("");
     } catch (e) {
       console.error(e);
@@ -244,7 +244,7 @@ export default function ProfilePage() {
             <h3>AI Configuration</h3>
           </div>
           <p className="text-xs text-apple-text-muted text-center mb-6 leading-relaxed">
-            Connect your OpenAI API Key to enable the floating AI Assistant. Your key is securely encrypted locally before being saved.
+            Connect your Gemini API Key to enable the floating AI Assistant. Your key is securely encrypted locally before being saved.
           </p>
           
           <div className="w-full flex flex-col gap-3">
@@ -258,7 +258,7 @@ export default function ProfilePage() {
             )}
             <input 
               type="password"
-              placeholder="sk-..."
+              placeholder="AIza..."
               value={apiKey}
               onChange={(e) => setApiKey(e.target.value)}
               className="w-full bg-apple-border/10 border border-apple-border/30 rounded-md px-4 py-2.5 text-sm text-apple-text focus:outline-none focus:border-apple-accent focus:bg-apple-border/20 transition-all font-mono"
@@ -299,6 +299,15 @@ export default function ProfilePage() {
                 </button>
               ))}
             </div>
+
+            {user?.providerData.find(p => p.providerId === 'google.com')?.photoURL && (
+              <button 
+                onClick={() => handleUpdateAvatar(user.providerData.find(p => p.providerId === 'google.com')!.photoURL!)}
+                className="mt-6 w-full py-2 border border-apple-border/50 text-apple-text text-sm rounded-md hover:bg-apple-border/20 transition-colors"
+              >
+                Revert to Google Photo
+              </button>
+            )}
           </div>
         </div>
       )}

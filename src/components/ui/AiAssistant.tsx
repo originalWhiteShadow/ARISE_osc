@@ -62,19 +62,22 @@ export function AiAssistant() {
     setIsTyping(true);
 
     try {
-      const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      const geminiMessages = messages.map(m => ({
+        role: m.role === 'assistant' ? 'model' : 'user',
+        parts: [{ text: m.content }]
+      }));
+      geminiMessages.push({ role: 'user', parts: [{ text: userMsg }] });
+
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${apiKey}`
         },
         body: JSON.stringify({
-          model: "gpt-4o-mini", // Cost effective fast model
-          messages: [
-            { role: "system", content: "You are the ARISE Core AI, an advanced tech-focused assistant for the ARISE Open Source Community. Keep responses extremely concise, intelligent, and formatted cleanly. You assist college students and engineers in building tech projects." },
-            ...messages,
-            { role: "user", content: userMsg }
-          ]
+          systemInstruction: {
+            parts: [{ text: "You are the ARISE Core AI, an advanced tech-focused assistant for the ARISE Open Source Community. Keep responses extremely concise, intelligent, and formatted cleanly. You assist college students and engineers in building tech projects." }]
+          },
+          contents: geminiMessages
         })
       });
 
@@ -83,7 +86,7 @@ export function AiAssistant() {
       if (data.error) {
         setMessages(prev => [...prev, { role: "assistant", content: `Error: ${data.error.message}` }]);
       } else {
-        const reply = data.choices[0].message.content;
+        const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "No response generated.";
         setMessages(prev => [...prev, { role: "assistant", content: reply }]);
       }
     } catch (e) {
@@ -144,7 +147,7 @@ export function AiAssistant() {
                 <div className="flex-1 flex flex-col items-center justify-center text-center px-4 gap-4">
                   <Key className="w-8 h-8 text-apple-text-muted/50" />
                   <p className="text-sm text-apple-text-muted">
-                    Your neural interface requires an active OpenAI API Key to function.
+                    Your neural interface requires an active Gemini API Key to function.
                   </p>
                   <Link 
                     href="/profile"
